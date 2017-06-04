@@ -1,0 +1,47 @@
+body {
+    text-align: center;
+    color: #CCCCCC;
+    background-color: #000000;
+    font-family: "Source Sans Pro", Helvetica, Arial, sans-serif !important;
+    font-size: 75% !important;
+    margin: 0px;
+}
+
+a, button {
+    color: #CCCCCC;
+    text-decoration: none;
+}
+a:hover, button:hover {
+    color: #eeeeee;
+}
+
+#header {position: absolute; top: 0px; left: 0px; right: 0px; background-color: rgba(0, 0, 0, 0.5); text-align: left; z-index: 2000;}
+#header h1, #header h2 {display: inline-block; margin: 0px; padding: 0px;}
+#header h2::before {content: " - ";}
+#header button {background-color: inherit; border: none; cursor: pointer;}
+#header button, #header a {padding: 0px 8px;}
+#progress {position: relative; top: 0px; left: 0px; width: 0%; height: 2px; background-color: #FFF;}
+#nav {float: right; padding-top: 0.5em; padding-right: 2em; text-align: right}
+#title {margin: 0px 8px;}
+
+#page_loading {background-color: #000; position: fixed; z-index: 3000; height: 100%; width: 100%;}
+
+#map {position: absolute; width: 100%; top: 0px; bottom: 0px; right: 0px;}
+
+#cover-container {position: absolute; left: 0px; top: 0px; bottom: 0px; right: 0px;  overflow: hidden; background-color: rgba(0, 0, 0, 0.5); z-index: 1000}
+#cover-container > div {position: absolute; left: 0px; bottom: -75px; right: 0px;}
+#cover {margin-bottom: 50px;}
+#cover > div {display: block; height: 200px; margin-top: 50px;}
+
+#thumbs {text-align: center;}
+#thumbs ul {display: inline-block; line-height: 0px; margin: 0px 100px; padding: 0px;}
+#thumbs li {display: inline-block; margin: 0px;}
+#thumbs li .caption {display: none;}
+a.thumb {display: inline-block; width: 75px; height: 75px; background-position: center center; background-size: cover;}
+
+#image-container {position: absolute; top: 0px; bottom: 0px; left: 0px; right: 30%; z-index: 1010; display: none;}
+#container, #next {position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; background-position: center center; background-repeat: no-repeat; background-size: contain;}
+#next {display: none;}
+#legend {position: absolute; bottom: 0px; left: 0px; right: 0px; background-color: rgba(0, 0, 0, 0.5); padding: 1em;}
+
+#container, #cover-container {cursor: pointer;}

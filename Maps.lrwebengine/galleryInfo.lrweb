@@ -1,0 +1,279 @@
+--[[
+
+galleryInfo.lrweb
+This file specifies the development environment within Lightroom.
+
+The views table creates the panel entries available within the Lightroom UI.
+
+--
+
+Map Lightroom Web Gallery - https://github.com/tmuguet/map-lightroom-gallery
+
+Copyright (c) 2017 Thomas Muguet (https://tmuguet.me)
+Portions Copyright (c) 2015-2016 Justin Briggs (http://trialstravails.blogspot.com) from The Gallerific Lightroom Web Gallery
+
+Licensed under the MIT License:
+   http://www.opensource.org/licenses/mit-license.php
+]]
+
+local useMultiBind = false
+return {
+	LrSdkVersion = 4.0,
+	LrSdkMinimumVersion = 2.0, -- minimum SDK version required by this plugin
+
+	title = "Map Lightroom Web Gallery",
+	id = "me.tmuguet.map", -- unique plug-in id
+	galleryType = "lua", -- lua
+	maximumGallerySize = 50000,
+	supportsLiveUpdate = false,
+	aboutBoxFile = "about.html",
+
+	model = {
+		["metadata.pluginVersion.value"] = "1.0.0", -- change collectionDescription as well.
+
+		-- The following metadata are located in the header of the sample and can be edited by the user using the Site Info panel.
+		["metadata.siteTitle.value"] = LOC "$$$/AgWPG/Templates/HTML/DefaultValues/properties/SiteTitle=Site Title",
+		["metadata.collectionTitle.value"] = LOC "$$$/AgWPG/Templates/HTML/DefaultValues/properties/CollectionTitle=My Photographs",
+		["metadata.collectionDescription.value"] = LOC "$$$/AgWPG/Templates/HTML/DefaultValues/properties/CollectionDescription=Photo Gallery created by Map Lightroom Web Gallery Plugin for Adobe Lightroom",
+
+		["appearance.siteTitle.cssID"] = "#liveUpdateSiteTitle",
+		["appearance.collectionTitle.cssID"] = "#liveUpdateCollectionTitle",
+		["appearance.collectionDescription.cssID"] = "#liveUpdateCollectionDescription",
+
+		-- The name of the homepage file when published
+		["metadata.homePage.value"] = {
+			value = "index.html",
+			metadata = { [ "ag:dataType" ] = "webLink" },
+		},
+
+		-- the large properties are used to display the main image in the center panel of the page
+		["photoSizes.large.directory"] = "im/lg", -- names are short to save space in html file
+		["photoSizes.large.maxHeight"] = 2000,
+		["photoSizes.large.maxWidth"] = 2000,
+		["photoSizes.large.metadataExportMode"] = useMultiBind and "copyright"
+			or function() return photoSizes.thumb.metadataExportMode end,
+		["photoSizes.large.height"] = useMultiBind and 450
+			or function() return photoSizes.large.width end,
+		["photoSizes.large.width"] = 2000,
+
+		["photoSizes.full.directory"] = "im/fl",
+		["photoSizes.full.maxHeight"] = 20000,
+		["photoSizes.full.maxWidth"] = 20000,
+		["photoSizes.full.metadataExportMode"] = useMultiBind and "copyright"
+			or function() return photoSizes.thumb.metadataExportMode end,
+		["nonCSS.fullSizeImageWidth"] = 4000,
+		-- avoid generating big full images if links disabled
+		["photoSizes.full.height"] = useMultiBind and 1200
+			or function() return nonCSS.fullSizeImageWidth end,
+		["photoSizes.full.width"] = function() return nonCSS.fullSizeImageWidth end,
+
+		-- the thumb properties are responsible for displaying the thumbnails in the left-hand panel of the page.
+		["photoSizes.thumb.directory"] = "im/th",
+		["photoSizes.thumb.height"] = 100,
+		["photoSizes.thumb.metadataExportMode"] = "copyright",
+		["photoSizes.thumb.width"] = 100,
+		["photoSizes.thumb.cropMode"] = "maximum", -- fill the square thumbnail (minimum keeps aspect)
+		["photoSizes.tracking"] = false,
+		["nonCSS.tracking"] = false,
+
+		["lightroomApplication.identityPlateExport"] = "(main)", -- optional entry displaying identity plate
+		["lightroomApplication.jpegQuality"] = 70, -- quality of images when published
+		["lightroomApplication.sizeBeingViewed"] = "thumb",
+		["lightroomApplication.useWatermark"] = true,
+		["lightroomApplication.watermarkID"] = "",
+		["lightroomApplication.outputSharpening"] = 2,
+
+		["nonCSS.numCols"] = 1, -- as we are using a scrollbar panel, 1 column is sufficient.
+		["nonCSS.numRows"] = 50001, -- greater than maximum gallery size; we don't want multiple grid pages.
+
+		-- Social / sharing options:
+		["nonCSS.noIndexing"] = false,
+		["metadata.keywords"] = LOC "$$$/AgWPG/Templates/HTML/DefaultValues/properties/keywords=photography,photos,gallery,album,imagery,images,photographer,adobe,photoshop,lightroom,gallerific",
+		["nonCSS.featuredImageIndex"] = "1",
+		["metadata.siteindex"] = "http://www.mydomain.com/",
+		["metadata.canonicalUrlBase"] = "http://www.mydomain.com/MyAlbum/",
+		["nonCSS.ignApiKey"] = "",
+
+		["perImageSetting.title"] = {
+			enabled = true,
+			value = "{{com.adobe.title}}",
+		},
+		["perImageSetting.description"] = {
+			enabled = true,
+			value = "{{com.adobe.caption}}",
+		},
+		["perImageSetting.locationData"] = {
+			enabled = true,
+			value = [[{{com.adobe.location}};;{{com.adobe.city}};;{{com.adobe.state}};;{{com.adobe.country}};;{{com.adobe.GPS}};;]],
+		},
+	},
+	properties = {
+		perImage = {
+			{
+				id = "title",
+				title = LOC "$$$/WPG/HTML/PerImage/properties/ImageTitle=Image Title",
+			},
+			{
+				id = "description",
+				title = LOC "$$$/WPG/HTML/PerImage/properties/ImageCaption=Image Description",
+			},
+			{
+				id = "locationData",
+				title = LOC "$$$/WPG/HTML/PerImage/properties/LocationData=Location Data (Don't edit this)",
+			},
+		},
+	},
+	iconicPreview = {
+		flashMovie = "preview.png",
+	},
+	views = function( controller, f )
+		local LrView = import "LrView"
+		local bind = LrView.bind
+		local multibind = f.multibind
+
+		return {
+			labels = f:panel_content {
+				bindToObject = controller,
+				f:header_section {
+					f:static_text  {
+						title = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/TitlesText=Site Informations",
+						place_vertical = 0.5,
+						height_in_lines = -1,
+						width = 300,
+					},
+				},
+				f:subdivided_sections {
+					-- Site Info panel for user to change site title, collection and description entries.
+					f:labeled_text_input  {
+						title = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/SiteTitle=Site Title",
+						value = bind "metadata.siteTitle.value",
+					},
+					f:labeled_text_input  {
+						title = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/CollectionTitle=Collection Title",
+						value = bind "metadata.collectionTitle.value",
+					},
+					f:labeled_text_input {
+						title = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/CollectionDescription=Collection Description",
+						value = bind "metadata.collectionDescription.value",
+					},
+					f:labeled_text_input  {
+						title = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/SiteIndex=Homepage",
+						value = bind "metadata.siteindex",
+					},
+					f:labeled_text_input  {
+						title = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/DestUrl=Destination URL path (to index.html) for this gallery, if any",
+						value = bind "metadata.canonicalUrlBase",
+					},
+					f:labeled_text_input  {
+						title = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/IGNAPIkey=IGN API key",
+						value = bind "nonCSS.ignApiKey",
+					},
+				},
+			},
+			appearanceConfiguration = f:panel_content {
+				bindToObject = controller,
+				f:subdivided_sections {
+					-- adjust large image sizes
+					f:header_section_label {
+						title = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/Appearance/ImageSizes=Image Sizes",
+					},
+					f:slider_content_column {
+						f:static_text  {
+							title = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/ImageSizeText=Image will be scaled down to fit onto the web page,\nbut will never be scaled up from this size.",
+							height_in_lines = -1,
+							place_vertical = 0.5,
+							width=320,
+						},
+						f:slider_row {
+							title = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/MaximumImageSizeLabel/LargePreview=Slide Size",
+							value = useMultiBind and multibind {
+								"photoSizes.large.width",
+								"photoSizes.large.height",
+								"appearance.liveUpdateImageSize.maxSize",
+							}
+							or bind "photoSizes.large.width",
+							tracking = bind "nonCSS.tracking",
+							unit = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/ImageSizeUnit=px",
+							max = 2000,
+							min = 420,
+							width_in_digits = 5,
+							precision = 0,
+						},
+					},
+					f:slider_content_column {
+						f:slider_row {
+							title = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/MaximumImageSizeLabel/FullPreview=Full (Expanded) Size",
+							value = useMultiBind and multibind {
+								"nonCSS.fullSizeImageWidth",
+								"photoSizes.full.height",
+							}
+							or bind "nonCSS.fullSizeImageWidth",
+							unit = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/ImageSizeUnit=px",
+							max = 20000,
+							min = 600,
+							width_in_digits = 6,
+							precision = 0,
+						},
+					},
+				},
+				f:subdivided_sections {
+					f:header_section_label {
+						title = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/Appearance/SharingControls=Public Sharing & Social Media Options",
+					},
+					f:content_column {
+						f:checkbox_row {
+							title = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/Appearance/DiscourageIndexing=Discourage search engines from indexing this site",
+							value = bind "nonCSS.noIndexing",
+						},
+					},
+					f:labeled_text_input  {
+						title = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/Keywords=Search keywords for gallery",
+						value = bind "metadata.keywords",
+					},
+					f:labeled_text_input  {
+						title = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/FeaturedImage=Index of image to be featured on social media (1=1st image)",
+						value = bind "nonCSS.featuredImageIndex",
+					},
+				},
+			},
+			outputSettings = f:panel_content {
+				bindToObject = controller,
+				f:subdivided_sections {
+					f:header_section_label {
+						title = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/ImageHandling=Large Images",
+					},
+					f:slider_content_column {
+						f:static_text  {
+							title = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/ImageQualityText=Recommend keeping quality <= 76 for a reasonable size to quality tradeoff for the web.",
+							height_in_lines = -1,
+							place_vertical = 0.5,
+							width = 300,
+						},
+						f:slider_row {
+							title = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/MaximumImageSizeLabel/JPEGQualityLabel=JPG Quality",
+							value = bind "lightroomApplication.jpegQuality",
+							tracking = bind "lightroomApplication.jpegQuality.tracking",
+							tracking_value = "qualityTracking",
+							unit = "",
+							max = 100,
+							min = 0,
+							width_in_digits = 4,
+							precision = 0,
+						},
+					},
+					f:slider_content_column {
+						f:metadataModeControl {
+							value = useMultiBind and multibind {
+								"photoSizes.thumb.metadataExportMode",
+								"photoSizes.large.metadataExportMode",
+								"photoSizes.full.metadataExportMode",
+							}
+							or bind "photoSizes.thumb.metadataExportMode",
+						},
+					},
+					f:watermark_section( controller ),
+				},
+			},
+		}
+	end,
+}
