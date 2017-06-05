@@ -29,11 +29,11 @@ a:hover, button:hover {
 #map {position: absolute; width: 100%; top: 0px; bottom: 0px; right: 0px;}
 
 #cover-container {position: absolute; left: 0px; top: 0px; bottom: 0px; right: 0px;  overflow: hidden; background-color: rgba(0, 0, 0, 0.5); z-index: 1000}
-#cover-container > div {position: absolute; left: 0px; bottom: -75px; right: 0px;}
+#cover-container > div {position: absolute; left: 0px; bottom: 0px; right: 0px; max-height: 80%;}
 #cover {margin-bottom: 50px;}
 #cover > div {display: block; height: 200px; margin-top: 50px;}
 
-#thumbs {text-align: center;}
+#thumbs {text-align: left;}
 #thumbs ul {display: inline-block; line-height: 0px; margin: 0px 100px; padding: 0px;}
 #thumbs li {display: inline-block; margin: 0px;}
 #thumbs li .caption {display: none;}
