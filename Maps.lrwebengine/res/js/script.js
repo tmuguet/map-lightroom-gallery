@@ -203,6 +203,7 @@ window.onload = function() {
         	$("#btnDownloadImage").animate({opacity: 0.3});
     	} else {
         	var link = img.find("a.thumb");
+        	var flyTo = link.attr("data-lat") && link.attr("data-lng") && link.attr("data-zoom");
 
         	if (selectedIndex < 1) {    // 0 or none selected
         	    $("#cover-container").fadeOut(400, function() {$("#image-container").fadeIn(400);});
@@ -213,7 +214,8 @@ window.onload = function() {
                     },
                     complete: function() {
                         map.invalidateSize(false);
-                        map.flyTo([link.attr("data-lat"), link.attr("data-lng")], link.attr("data-zoom"));
+                        if (flyTo)
+                            map.flyTo([link.attr("data-lat"), link.attr("data-lng")], link.attr("data-zoom"));
                     },
                 });
             	$("#btnDownloadImage").animate({opacity: 1});
@@ -223,7 +225,8 @@ window.onload = function() {
                 clone.fadeOut(400, function() {
                 	clone.remove();
             	});
-            	map.flyTo([link.attr("data-lat"), link.attr("data-lng")], link.attr("data-zoom"));
+            	if (flyTo)
+                	map.flyTo([link.attr("data-lat"), link.attr("data-lng")], link.attr("data-zoom"));
             }
 
         	$("#container").css('background-image', "url('" + link.attr("data-img-lg") + "')").fadeIn(400);
