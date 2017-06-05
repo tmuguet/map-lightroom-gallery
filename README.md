@@ -34,5 +34,5 @@ This projects relies on:
 * [Extensions Géoportail](https://github.com/IGNF/geoportal-extensions) (CeCILL-B)
 * [chart.js](http://www.chartjs.org/) (MIT license)
 * [FileSaver.js](https://github.com/eligrey/FileSaver.js/) (MIT license)
-* Modified version of [GPX plugin for Leaflet](https://github.com/mpetazzoni/leaflet-gpx/) (BSD 2-clause license)
+* Modified version of [GPX plugin for Leaflet](https://github.com/mpetazzoni/leaflet-gpx/) (BSD 2-clause license) - available here: https://github.com/tmuguet/leaflet-gpx/commit/7a8889f0ca2bc3eeb64ca61165c7adba294ccb19
 * [jQuery history plugin](https://tkyk.github.io/jquery-history-plugin/) (MIT license)
