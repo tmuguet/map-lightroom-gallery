@@ -1,5 +1,5 @@
 window.onload = function() {
-	var map = L.map('map', {zoomControl: false, boxZoom: false, doubleClickZoom: false, dragging: false, keyboard: false, scrollWheelZoom: false, tap: false}).setView([44.92710337178908, 6.291518211364747], 15);
+    var map = L.map('map', {zoomControl: false, boxZoom: false, doubleClickZoom: false, dragging: false, keyboard: false, scrollWheelZoom: false, tap: false}).setView([44.92710337178908, 6.291518211364747], 15);
 
     var lyr = L.geoportalLayer.WMTS({
         layer  : "ORTHOIMAGERY.ORTHOPHOTOS",
@@ -145,12 +145,12 @@ window.onload = function() {
         });
     });
 
-	// Load thumbnails that are further down the page
-	setTimeout(function(){
-		$("img.delayload").each(function () {
-		$(this).attr('src', $(this).data('src'));
-		$(this).show();
-	}); }, 1200);
+    // Load thumbnails that are further down the page
+    setTimeout(function(){
+        $("img.delayload").each(function () {
+        $(this).attr('src', $(this).data('src'));
+        $(this).show();
+    }); }, 1200);
 
     var start = new Date();
     var maxTime = 5000;
@@ -179,14 +179,14 @@ window.onload = function() {
     }
 
     function galleryShow(img) {
-    	var index = $("#thumbs li").index(img);
-    	$.history.load(index);
+        var index = $("#thumbs li").index(img);
+        $.history.load(index);
 
-    	var selectedIndex = $("#thumbs li").index($("#thumbs li.selected"));
+        var selectedIndex = $("#thumbs li").index($("#thumbs li.selected"));
 
-    	if (index == 0) {
-        	$("#cover-container").fadeIn(400);
-        	$("#map").animate({width: '100%'}, {
+        if (index == 0) {
+            $("#cover-container").fadeIn(400);
+            $("#map").animate({width: '100%'}, {
                 duration: 400,
                 progress: function() {
                     map.invalidateSize(false);
@@ -197,16 +197,16 @@ window.onload = function() {
                         map.flyToBounds(track.getBounds(), {padding: [200, 200]});
                 },
             });
-        	$("#container").fadeOut(400);
-        	$("#image-container").fadeOut(400);
+            $("#container").fadeOut(400);
+            $("#image-container").fadeOut(400);
 
-        	$("#btnDownloadImage").animate({opacity: 0.3});
-    	} else {
-        	var link = img.find("a.thumb");
-        	var flyTo = link.attr("data-lat") && link.attr("data-lng") && link.attr("data-zoom");
+            $("#btnDownloadImage").animate({opacity: 0.3});
+        } else {
+            var link = img.find("a.thumb");
+            var flyTo = link.attr("data-lat") && link.attr("data-lng") && link.attr("data-zoom");
 
-        	if (selectedIndex < 1) {    // 0 or none selected
-        	    $("#cover-container").fadeOut(400, function() {$("#image-container").fadeIn(400);});
+            if (selectedIndex < 1) {    // 0 or none selected
+                $("#cover-container").fadeOut(400, function() {$("#image-container").fadeIn(400);});
                 $("#map").animate({width: '30%'}, {
                     duration: 1000,
                     progress: function() {
@@ -218,129 +218,129 @@ window.onload = function() {
                             map.flyTo([link.attr("data-lat"), link.attr("data-lng")], link.attr("data-zoom"));
                     },
                 });
-            	$("#btnDownloadImage").animate({opacity: 1});
-        	} else {
+                $("#btnDownloadImage").animate({opacity: 1});
+            } else {
                 var clone = $("#container").clone();
                 clone.insertAfter($("#container"));
                 clone.fadeOut(400, function() {
-                	clone.remove();
-            	});
-            	if (flyTo)
-                	map.flyTo([link.attr("data-lat"), link.attr("data-lng")], link.attr("data-zoom"));
+                    clone.remove();
+                });
+                if (flyTo)
+                    map.flyTo([link.attr("data-lat"), link.attr("data-lng")], link.attr("data-zoom"));
             }
 
-        	$("#container").css('background-image', "url('" + link.attr("data-img-lg") + "')").fadeIn(400);
-        	$("#legend").text(img.find(".image-desc").text());
-        	$("#btnDownloadImage").attr("href", link.attr("data-img-fl"));
+            $("#container").css('background-image', "url('" + link.attr("data-img-lg") + "')").fadeIn(400);
+            $("#legend").text(img.find(".image-desc").text());
+            $("#btnDownloadImage").attr("href", link.attr("data-img-fl"));
         }
         $("#thumbs li").removeClass("selected");
-    	img.addClass("selected");
-    	if (img.next().length > 0) {
-        	$("#btnNextImage").attr("href", "#" + (index+1));
-        	$("#btnNextImage").animate({opacity: 1});
-        	$("#next").css('background-image', "url('" + img.next().find("a.thumb").attr("data-img-lg") + "')");
-    	} else {
-        	$("#btnNextImage").animate({opacity: 0.3});
-    	}
-    	if (img.prev().length > 0) {
-        	$("#btnPrevImage").animate({opacity: 1});
-        	$("#btnPrevImage").attr("href", "#" + (index-1));
-    	} else {
-        	$("#btnPrevImage").animate({opacity: 0.3});
-    	}
-	}
-	function galleryNext() {
-    	var current = $("#thumbs li.selected");
-    	var next = current.next();
-    	if (next.length > 0) {
-        	galleryShow(next);
-        	if (isSlideshowRunning)
-        	    gallerySetTimeout();
-    	}
-	}
-	function galleryPrevious() {
-    	var current = $("#thumbs li.selected");
-    	var prev = current.prev();
-    	if (prev.length > 0) {
-        	galleryShow(prev);
-    	}
-	}
-	function galleryGotoIndex(index) {
-    	var goto = $("#thumbs li").eq(index);
-    	if (goto.length > 0) {
-        	galleryShow(goto);
-    	}
-	}
-	var isSlideshowRunning = false;
-	var slideshowTimeout = undefined;
-	function galleryToggleSlideshow() {
-    	if (!isSlideshowRunning) {
-    	    isSlideshowRunning = true;
-    	    $("#header .fa-play").removeClass("fa-play").addClass("fa-pause");
-    	    gallerySetTimeout();
-    	} else {
-        	isSlideshowRunning = false;
-    	    $("#header .fa-pause").removeClass("fa-pause").addClass("fa-play");
-    	    $('#progress').css("width", "0%");
-			if (slideshowTimeout) {
-				clearTimeout(slideshowTimeout);
-				slideshowTimeout = undefined;
+        img.addClass("selected");
+        if (img.next().length > 0) {
+            $("#btnNextImage").attr("href", "#" + (index+1));
+            $("#btnNextImage").animate({opacity: 1});
+            $("#next").css('background-image', "url('" + img.next().find("a.thumb").attr("data-img-lg") + "')");
+        } else {
+            $("#btnNextImage").animate({opacity: 0.3});
+        }
+        if (img.prev().length > 0) {
+            $("#btnPrevImage").animate({opacity: 1});
+            $("#btnPrevImage").attr("href", "#" + (index-1));
+        } else {
+            $("#btnPrevImage").animate({opacity: 0.3});
+        }
+    }
+    function galleryNext() {
+        var current = $("#thumbs li.selected");
+        var next = current.next();
+        if (next.length > 0) {
+            galleryShow(next);
+            if (isSlideshowRunning)
+                gallerySetTimeout();
+        }
+    }
+    function galleryPrevious() {
+        var current = $("#thumbs li.selected");
+        var prev = current.prev();
+        if (prev.length > 0) {
+            galleryShow(prev);
+        }
+    }
+    function galleryGotoIndex(index) {
+        var goto = $("#thumbs li").eq(index);
+        if (goto.length > 0) {
+            galleryShow(goto);
+        }
+    }
+    var isSlideshowRunning = false;
+    var slideshowTimeout = undefined;
+    function galleryToggleSlideshow() {
+        if (!isSlideshowRunning) {
+            isSlideshowRunning = true;
+            $("#header .fa-play").removeClass("fa-play").addClass("fa-pause");
+            gallerySetTimeout();
+        } else {
+            isSlideshowRunning = false;
+            $("#header .fa-pause").removeClass("fa-pause").addClass("fa-play");
+            $('#progress').css("width", "0%");
+            if (slideshowTimeout) {
+                clearTimeout(slideshowTimeout);
+                slideshowTimeout = undefined;
             }
-    	}
-	}
-	$("#btnSlideshow").click(galleryToggleSlideshow);
-	$("#btnPrevImage").click(function(e) {galleryPrevious(); e.preventDefault();});
-	$("#btnNextImage").click(function(e) {galleryNext(); e.preventDefault();});
-	$("#container").click(galleryNext);
-	$("#cover-container").click(galleryNext);
+        }
+    }
+    $("#btnSlideshow").click(galleryToggleSlideshow);
+    $("#btnPrevImage").click(function(e) {galleryPrevious(); e.preventDefault();});
+    $("#btnNextImage").click(function(e) {galleryNext(); e.preventDefault();});
+    $("#container").click(galleryNext);
+    $("#cover-container").click(galleryNext);
 
-	$('#container, #cover-container').swipe({
-		// swipe events for images (on container to allow swiping on empty space; important not to allow up/down so page scroll works)
-		swipeLeft:function(event, direction, distance, duration, fingerCount) {
-			if (fingerCount==1)  galleryNext();
-		},
-		swipeRight:function(event, direction, distance, duration, fingerCount) {
-			if (fingerCount==1)  galleryPrevious();
-		},
-		fingers: $.fn.swipe.fingers.ALL,
-		excludedElements: "button, input, select, textarea, .noSwipe", // NOT a
-		threshold: 75
-	});
+    $('#container, #cover-container').swipe({
+        // swipe events for images (on container to allow swiping on empty space; important not to allow up/down so page scroll works)
+        swipeLeft:function(event, direction, distance, duration, fingerCount) {
+            if (fingerCount==1)  galleryNext();
+        },
+        swipeRight:function(event, direction, distance, duration, fingerCount) {
+            if (fingerCount==1)  galleryPrevious();
+        },
+        fingers: $.fn.swipe.fingers.ALL,
+        excludedElements: "button, input, select, textarea, .noSwipe", // NOT a
+        threshold: 75
+    });
 
-	$(document).keydown(function(e) {
-		if (e.altKey || e.ctrlKey || e.shiftKey) return; // ignore special combinations
-		var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
-		switch(key) {
-			case 32: // space
-				galleryToggleSlideshow();
-				e.preventDefault();
-				break;
-			case 35: // End
-				galleryGotoIndex(-1);
-				e.preventDefault();
-				break;
-			case 36: // Home
-				galleryGotoIndex(0);
-				e.preventDefault();
-				break;
-			case 37: // left arrow
-				galleryPrevious();
-				e.preventDefault();
-				break;
-			case 39: // right arrow
-				galleryNext();
-				e.preventDefault();
-				break;
-		}
-	});
+    $(document).keydown(function(e) {
+        if (e.altKey || e.ctrlKey || e.shiftKey) return; // ignore special combinations
+        var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+        switch(key) {
+            case 32: // space
+                galleryToggleSlideshow();
+                e.preventDefault();
+                break;
+            case 35: // End
+                galleryGotoIndex(-1);
+                e.preventDefault();
+                break;
+            case 36: // Home
+                galleryGotoIndex(0);
+                e.preventDefault();
+                break;
+            case 37: // left arrow
+                galleryPrevious();
+                e.preventDefault();
+                break;
+            case 39: // right arrow
+                galleryNext();
+                e.preventDefault();
+                break;
+        }
+    });
 
-	/* Handle download all button invocation; jszip loading is deferred until here */
-	function downloadAll() {
-    	$("#btnDownloadAll").attr("disabled", "disabled");
-    	$("#btnDownloadAll i.fa").removeClass('fa-file-archive-o').addClass('fa-spinner').addClass('fa-spin');
-    	$("#btnDownloadAll").append("<span class='progress'>... starting</span>");
+    /* Handle download all button invocation; jszip loading is deferred until here */
+    function downloadAll() {
+        $("#btnDownloadAll").attr("disabled", "disabled");
+        $("#btnDownloadAll i.fa").removeClass('fa-file-archive-o').addClass('fa-spinner').addClass('fa-spin');
+        $("#btnDownloadAll").append("<span class='progress'>... starting</span>");
 
-		function showMessage(text, alerttype) {
+        function showMessage(text, alerttype) {
             $("body").append('<div id="dialog-message" title="Download"><p>' + text + '</p></div>');
             $("#dialog-message").dialog({
               modal: true,
@@ -352,97 +352,97 @@ window.onload = function() {
               close: function( event, ui ) {$(this).dialog("destroy"); $("#dialog-message").remove();}
             });
 
-			$("#btnDownloadAll").removeAttr("disabled");
-        	$("#btnDownloadAll i.fa").addClass('fa-file-archive-o').removeClass('fa-spinner').removeClass('fa-spin');
-        	$("#btnDownloadAll .progress").remove();
-		}
+            $("#btnDownloadAll").removeAttr("disabled");
+            $("#btnDownloadAll i.fa").addClass('fa-file-archive-o').removeClass('fa-spinner').removeClass('fa-spin');
+            $("#btnDownloadAll .progress").remove();
+        }
 
-		$.getScript('./res/js/jszip-all.min.js', function() {
-			try {
-				var isFileSaverSupported = !!new Blob;
-			} catch (e) {}
-			if (!isFileSaverSupported) { /* can't check this until Blob polyfill loads above */
-				showMessage("Unsupported browser. Try upgrading.", "alert-danger");
-				return false;
-			}
+        $.getScript('./res/js/jszip-all.min.js', function() {
+            try {
+                var isFileSaverSupported = !!new Blob;
+            } catch (e) {}
+            if (!isFileSaverSupported) { /* can't check this until Blob polyfill loads above */
+                showMessage("Unsupported browser. Try upgrading.", "alert-danger");
+                return false;
+            }
 
-			var zip = new JSZip();
+            var zip = new JSZip();
 
-			var Promise = window.Promise;
-			if (!Promise) {
-				Promise = JSZip.external.Promise;
-			}
-			// add file to the zip-to-be
-			function addzipfile(zip, path) {
-				var filename = path.replace(/.*\//g, ""); // strip path
-				zip.file(filename, urlToPromise(path), {binary:true});
-			}
-			// Fetch the content and return the associated promise that will contain the data.
-			function urlToPromise(url) {
-				return new Promise(function(resolve, reject) {
-					JSZipUtils.getBinaryContent(url, function (err, data) {
-						if (err)  reject(err);
-						else  resolve(data);
-					});
-				});
-			}
+            var Promise = window.Promise;
+            if (!Promise) {
+                Promise = JSZip.external.Promise;
+            }
+            // add file to the zip-to-be
+            function addzipfile(zip, path) {
+                var filename = path.replace(/.*\//g, ""); // strip path
+                zip.file(filename, urlToPromise(path), {binary:true});
+            }
+            // Fetch the content and return the associated promise that will contain the data.
+            function urlToPromise(url) {
+                return new Promise(function(resolve, reject) {
+                    JSZipUtils.getBinaryContent(url, function (err, data) {
+                        if (err)  reject(err);
+                        else  resolve(data);
+                    });
+                });
+            }
 
             $("#thumbs li a.thumb").each(function() {
                 var image = $(this).attr("data-img-fl");
                 console.log("Adding", image);
-				addzipfile(zip, image);
+                addzipfile(zip, image);
             });
 
-			// asynchronously download all the images into a blob
-			zip.generateAsync({type:"blob", streamFiles: true, compression: "STORE"}, function updateCallback(metadata) {
-				if (metadata.percent)
-				    $("#btnDownloadAll .progress").text('... ' + Math.round(metadata.percent) + '%');
-			})
-			.then(function callback(blob) {
-				$("#btnDownloadAll .progress").text('... downloading');
-				saveAs(blob, "gallery.zip");
+            // asynchronously download all the images into a blob
+            zip.generateAsync({type:"blob", streamFiles: true, compression: "STORE"}, function updateCallback(metadata) {
+                if (metadata.percent)
+                    $("#btnDownloadAll .progress").text('... ' + Math.round(metadata.percent) + '%');
+            })
+            .then(function callback(blob) {
+                $("#btnDownloadAll .progress").text('... downloading');
+                saveAs(blob, "gallery.zip");
 
                 setTimeout(function() {
-    				$("#btnDownloadAll").removeAttr("disabled");
-                	$("#btnDownloadAll i.fa").addClass('fa-file-archive-o').removeClass('fa-spinner').removeClass('fa-spin');
-                	$("#btnDownloadAll .progress").remove();
+                    $("#btnDownloadAll").removeAttr("disabled");
+                    $("#btnDownloadAll i.fa").addClass('fa-file-archive-o').removeClass('fa-spinner').removeClass('fa-spin');
+                    $("#btnDownloadAll .progress").remove();
                 }, 5000);
-			}, function (e) {
-				showMessage(e, "alert-danger")
-			});
-		});
-		return false;
-	}
-	$('#btnDownloadAll').on('click', downloadAll);
+            }, function (e) {
+                showMessage(e, "alert-danger")
+            });
+        });
+        return false;
+    }
+    $('#btnDownloadAll').on('click', downloadAll);
 
-	/**** Functions to support integration of galleriffic with the jquery.history plugin ****/
-	// This function is called after calling ???.init(), after calling ???.load(), and/or after pushing "Go Back" button of a browser
-	function pageload(hash) {
-		// alert("pageload: " + hash);
-		// hash doesn't contain the first # character.
-		if(hash) {
-			galleryGotoIndex(hash);
-		} else {
-			galleryGotoIndex(0);
-		}
-	}
+    /**** Functions to support integration of galleriffic with the jquery.history plugin ****/
+    // This function is called after calling ???.init(), after calling ???.load(), and/or after pushing "Go Back" button of a browser
+    function pageload(hash) {
+        // alert("pageload: " + hash);
+        // hash doesn't contain the first # character.
+        if(hash) {
+            galleryGotoIndex(hash);
+        } else {
+            galleryGotoIndex(0);
+        }
+    }
 
-	// Initialize history plugin; causes the callback to be called by present location.hash.
-	$.history.init(pageload);
+    // Initialize history plugin; causes the callback to be called by present location.hash.
+    $.history.init(pageload);
 
-	// set onlick event for buttons using the jQuery on method
-	$("a[rel='history']").on('click', function(e) {
-		if (e.button != 0) return true;
+    // set onlick event for buttons using the jQuery on method
+    $("a[rel='history']").on('click', function(e) {
+        if (e.button != 0) return true;
 
-		var hash = this.href;
-		hash = hash.replace(/^.*#/, '');
+        var hash = this.href;
+        hash = hash.replace(/^.*#/, '');
 
-		// moves to a new page, where pageload is called at once.
-		// hash mustn't contain "#", "?"
-		$.history.load(hash);
+        // moves to a new page, where pageload is called at once.
+        // hash mustn't contain "#", "?"
+        $.history.load(hash);
 
-		return false;
-	});
+        return false;
+    });
 
     def.done(function(){
         setTimeout(function() {$("#page_loading").fadeOut(500);}, 500); // Let some time for map tiles to finish to load
