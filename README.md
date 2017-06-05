@@ -19,6 +19,7 @@ Loosely based on [The Gallerific Lightroom Web Gallery](http://trialstravails.bl
 2. Select the **Map Lightroom Web Gallery** from the **Layout style** at the top right.
 3. Choose the options you want. Enter titles, descriptions, customize your image captions. Choose the size of the gallery image slide and an expanded full size image to be generated, as well as caption metadata and watermark to include. You can use the **Preview in Browser** button to check out your album’s appearance. And then simply **Export to disk** or **Upload** (to a server via FTP/SFTP) the complete album when you’re ready! The resulting HTML pages and supporting files will be generated in the folder or server location you selected.
     * The generated folder can then be loaded onto a web server for access via the web - it will not fully work if launched locally from your file browser
+    * You can add a _track.gpx_ file besides _index.html_ to load and display it on the map
 
 ## License
 

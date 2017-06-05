@@ -117,6 +117,14 @@ window.onload = function() {
         var self = this;
 
         var line = new L.GPX("track.gpx", {async: true});
+        line.on('failed', function(e) {
+            console.log("Failed to retrieve track");
+            $("#chart").parent().remove();  // Remove chart (don't need it)
+
+            var firstThumb = $("#thumbs a.thumb[data-lat]:eq(0)");  // Take first thumb that has location data and use it for initial state of map
+            map.flyTo([firstThumb.attr("data-lat"), firstThumb.attr("data-lng")], firstThumb.attr("data-zoom")-2);
+            def.resolve();
+        });
         line.on('loaded', function(e) {
             track = e.target;
             map.fitBounds(track.getBounds(), {padding: [200, 200]});
