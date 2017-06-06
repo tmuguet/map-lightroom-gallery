@@ -102,10 +102,6 @@ return {
 			enabled = true,
 			value = "{{com.adobe.caption}}",
 		},
-		["perImageSetting.locationData"] = {
-			enabled = true,
-			value = [[{{com.adobe.location}};;{{com.adobe.city}};;{{com.adobe.state}};;{{com.adobe.country}};;{{com.adobe.GPS}};;]],
-		},
 	},
 	properties = {
 		perImage = {
@@ -116,10 +112,6 @@ return {
 			{
 				id = "description",
 				title = LOC "$$$/WPG/HTML/PerImage/properties/ImageCaption=Image Description",
-			},
-			{
-				id = "locationData",
-				title = LOC "$$$/WPG/HTML/PerImage/properties/LocationData=Location Data (Don't edit this)",
 			},
 		},
 	},

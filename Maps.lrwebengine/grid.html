@@ -33,45 +33,19 @@ featuredImgIndex = (featuredImgIndex ~= nil and featuredImgIndex>=1 and featured
 local featuredImage = imgDir .. "/lg/" .. getImage(featuredImgIndex).exportFilename .. ".jpg"
 local canonicalUrl = addSlash(model.metadata.canonicalUrlBase) .. "index.html"
 
---[[ Convert DMS to Decimal Degrees ]]
-function latlongDMStoDD(dms)
-	local deg = 0.0
-	local divisor = 1
-	for w in string.gfind(dms, "%d+") do
-		deg = deg + w/divisor
-		divisor = divisor*60
-	end
-	deg = round(deg, 7)
-	local hemi = string.match(dms, "%u")
-	if hemi == "S" or hemi == "W" then
-		deg = -deg
-	end
-	return deg
+local LrApplication = import 'LrApplication'
+local catalog = LrApplication.activeCatalog ()
+local idToPhoto = {}
+for _, photo in ipairs (catalog:getAllPhotos ()) do
+    idToPhoto [photo.localIdentifier] = photo
 end
 
---[[ Convert GPS coords to [lat, lng] table ]]
-function gpsToLL(gpsData)
-    local m = {}; i = 1
-    for str in string.gfind(gpsData, "%d+%W+%d+%W+%d+%W+%u") do
-		m[i] = latlongDMStoDD(str);  i = i + 1
-	end
-
-    return m
-end
-
-function getMapData(im)
+function getMapData(im, photo)
     local content=""
-	local m = {}; i = 1
-	for str in string.gmatch(im.metadata.locationData, "([^;]*);;") do
-		m[i] = str;  i = i + 1
-	end
-	local sublocation = m[1];	local city        = m[2]
-	local state       = m[3];	local country     = m[4]
-	local gpsCoords   = m[5]
+    local gpsCoords = photo:getRawMetadata("gps")
 
-    if (gpsCoords ~= "") then
-        local llCoords = gpsToLL(gpsCoords)
-        content = "data-lat='" .. llCoords[1] .. "' data-lng='" .. llCoords[2] .. "' data-zoom='17'"
+    if (gpsCoords ~= nil) then
+        content = "data-lat='" .. gpsCoords['latitude'] .. "' data-lng='" .. gpsCoords['longitude'] .. "' data-zoom='17'"
     end
     return content
 end
@@ -105,7 +79,7 @@ end
                     <ul>
     <li></li><lr:ThumbnailGrid><lr:GridPhotoCell><li>
     <% imgFn = image.exportFilename .. ".jpg" %>
-    <a class="thumb" href="#<%= cellIndex %>" data-img-lg="$imgDir/lg/$imgFn" data-img-fl="$imgDir/fl/$imgFn" style="background-image: url('$imgDir/th/$imgFn');" <%= getMapData(image) %>></a>
+    <a class="thumb" href="#<%= cellIndex %>" data-img-lg="$imgDir/lg/$imgFn" data-img-fl="$imgDir/fl/$imgFn" style="background-image: url('$imgDir/th/$imgFn');" <%= getMapData(image, idToPhoto [image.imageID]) %>></a>
     <div class="caption">
         <div class="image-title"><%= myStrip(image.metadata.title) %></div>
         <div class="image-desc"><%=  myStrip(image.metadata.description) %></div>
