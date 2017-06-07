@@ -31,7 +31,7 @@
 "$$$/AgWPG/Templates/HTML/DefaultValues/properties/ContactInfo=Nom du contact"
 "$$$/AgWPG/Templates/HTML/Defaults/ContactLink=mailto:utilisateur@domaine"
 
-"$$$/WPG/HTML/PerImage/properties/LocationData=Les données de localisation (Ne modifiez pas cela)"
+"$$$/WPG/HTML/PerImage/properties/ZoomLevel=Niveau de zoom sur la carte"
 "$$$/WPG/HTML/PerImage/properties/ImageCaption=Description de l'image"
 "$$$/WPG/HTML/PerImage/properties/ImageTitle=Titre de l'image"
 

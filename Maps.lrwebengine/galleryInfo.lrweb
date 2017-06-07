@@ -102,6 +102,10 @@ return {
 			enabled = true,
 			value = "{{com.adobe.caption}}",
 		},
+		["perImageSetting.zoomLevel"] = {
+			enabled = true,
+			value = [[{{com.adobe.location}}]],
+		},
 	},
 	properties = {
 		perImage = {
@@ -112,6 +116,10 @@ return {
 			{
 				id = "description",
 				title = LOC "$$$/WPG/HTML/PerImage/properties/ImageCaption=Image Description",
+			},
+			{
+				id = "zoomLevel",
+				title = LOC "$$$/WPG/HTML/PerImage/properties/ZoomLevel=Map Zoom Level",
 			},
 		},
 	},
