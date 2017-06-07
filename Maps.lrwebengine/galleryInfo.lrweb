@@ -89,7 +89,6 @@ return {
 		-- Social / sharing options:
 		["nonCSS.noIndexing"] = false,
 		["metadata.keywords"] = LOC "$$$/AgWPG/Templates/HTML/DefaultValues/properties/keywords=photography,photos,gallery,album,imagery,images,photographer,adobe,photoshop,lightroom,gallerific",
-		["nonCSS.featuredImageIndex"] = "1",
 		["metadata.siteindex"] = "http://www.mydomain.com/",
 		["metadata.canonicalUrlBase"] = "http://www.mydomain.com/MyAlbum/",
 		["nonCSS.ignApiKey"] = "",
@@ -229,10 +228,6 @@ return {
 					f:labeled_text_input  {
 						title = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/Keywords=Search keywords for gallery",
 						value = bind "metadata.keywords",
-					},
-					f:labeled_text_input  {
-						title = LOC "$$$/AgWPG/Templates/HTML/Panel/Labels/FeaturedImage=Index of image to be featured on social media (1=1st image)",
-						value = bind "nonCSS.featuredImageIndex",
 					},
 				},
 			},

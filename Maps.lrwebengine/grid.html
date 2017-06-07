@@ -24,15 +24,6 @@ function round(n, precision)
 	return math.floor(n * divisor + 0.5) / divisor
 end
 
---[[ Define some variables to make locating other resources easier]]
-local imgDir = "im"
-local theRoot = "./res"
-local imgFn = ""
-local featuredImgIndex = tonumber(model.nonCSS.featuredImageIndex)
-featuredImgIndex = (featuredImgIndex ~= nil and featuredImgIndex>=1 and featuredImgIndex<=numImages) and round(featuredImgIndex,1) or 1
-local featuredImage = imgDir .. "/lg/" .. getImage(featuredImgIndex).exportFilename .. ".jpg"
-local canonicalUrl = addSlash(model.metadata.canonicalUrlBase) .. "index.html"
-
 --[[ Courtesy of John R. Ellis; https://forums.adobe.com/message/7163901#7163901 ]]
 local LrApplication = import 'LrApplication'
 local catalog = LrApplication.activeCatalog ()
@@ -40,6 +31,34 @@ local idToPhoto = {}
 for _, photo in ipairs (catalog:getAllPhotos ()) do
     idToPhoto [photo.localIdentifier] = photo
 end
+
+--[[ Define some variables to make locating other resources easier]]
+local imgDir = "im"
+local theRoot = "./res"
+local imgFn = ""
+
+local featuredIm = nil
+local featuredPhoto = nil
+for i=1,numImages do
+    local im = getImage(i)
+    local p = idToPhoto[im.imageID]
+
+    if p:getFormattedMetadata("label") ~= "" then
+        -- Has a label, use this one
+        featureIm = im
+        featurePhoto = p
+        break
+    end
+
+    -- Fallback: use first best rated photo
+    if featuredPhoto == nil or featuredPhoto:getRawMetadata("rating") < p:getRawMetadata("rating") then
+        featureIm = im
+        featurePhoto = p
+    end
+end
+
+local featuredImage = imgDir .. "/lg/" .. featureIm.exportFilename .. ".jpg"
+local canonicalUrl = addSlash(model.metadata.canonicalUrlBase) .. "index.html"
 
 function getMapData(im, photo)
     local content_gps=""
