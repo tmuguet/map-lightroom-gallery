@@ -1,0 +1,52 @@
+<%
+--[[
+Map Lightroom Web Gallery - https://github.com/tmuguet/map-lightroom-gallery
+
+Copyright (c) 2017 Thomas Muguet (https://tmuguet.me)
+Portions Copyright (c) 2015-2016 Justin Briggs (http://trialstravails.blogspot.com) from The Gallerific Lightroom Web Gallery
+
+Licensed under the MIT License:
+   http://www.opensource.org/licenses/mit-license.php
+ ]]
+%>
+<%
+
+local LrApplication = import 'LrApplication'
+local LrFileUtils = import 'LrFileUtils'
+local LrPathUtils = import 'LrPathUtils'
+local catalog = LrApplication.activeCatalog ()
+local idToPhoto = {}
+for _, photo in ipairs (catalog:getAllPhotos ()) do
+    idToPhoto [photo.localIdentifier] = photo
+end
+
+local featuredIm = nil
+local featuredPhoto = nil
+for i=1,numImages do
+    local im = getImage(i)
+    local p = idToPhoto[im.imageID]
+
+    if p:getFormattedMetadata("label") ~= "" then
+        -- Has a label, use this one
+        featureIm = im
+        featurePhoto = p
+        break
+    end
+
+    -- Fallback: use first best rated photo
+    if featuredPhoto == nil or featuredPhoto:getRawMetadata("rating") < p:getRawMetadata("rating") then
+        featureIm = im
+        featurePhoto = p
+    end
+end
+
+local content = ""
+local path = LrPathUtils.parent(featurePhoto:getRawMetadata("path"))
+for filePath in LrFileUtils.files(path) do
+    if string.sub(filePath,-string.len("gpx"))=="gpx" then
+        content = LrFileUtils.readFile(filePath)
+        break
+    end
+end
+
+%><%= content %>

@@ -25,6 +25,10 @@ AddGridPages {
 	rows=model.nonCSS.numRows,
 	columns=model.nonCSS.numCols,
 }
+AddPage {
+	template="track.gpx",
+	filename="track.gpx"
+}
 -- include images and javascript resources
 AddResources {
 	source='res',
