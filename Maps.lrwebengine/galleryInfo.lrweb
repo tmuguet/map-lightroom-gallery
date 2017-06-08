@@ -29,7 +29,7 @@ return {
 	aboutBoxFile = "about.html",
 
 	model = {
-		["metadata.pluginVersion.value"] = "1.0.0", -- change collectionDescription as well.
+		["metadata.pluginVersion.value"] = "0.2.0",
 
 		-- The following metadata are located in the header of the sample and can be edited by the user using the Site Info panel.
 		["metadata.siteTitle.value"] = LOC "$$$/AgWPG/Templates/HTML/DefaultValues/properties/SiteTitle=Site Title",

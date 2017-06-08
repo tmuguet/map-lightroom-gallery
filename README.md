@@ -21,7 +21,7 @@ Loosely based on [The Gallerific Lightroom Web Gallery](http://trialstravails.bl
     * The generated folder can then be loaded onto a web server for access via the web - it will not fully work if launched locally from your file browser
     * The plugin automatically picks the featured image: the first photo which has a colored label or, if none, the first best rated photo
     * If a _.gpx_ file is present in the same folder as the featured image, the plugin exports it and displays it on the map
-        * You can replace the _track.gpx_ file besides _index.html_ to load and display another track on the map
+        * Once the album exported, you can replace the _track.gpx_ file besides _index.html_ to load and display another track on the map
 
 ## License
 
