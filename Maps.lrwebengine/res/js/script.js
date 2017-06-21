@@ -246,7 +246,14 @@ window.onload = function() {
         if (img.next().length > 0) {
             $("#btnNextImage").attr("href", "#" + (index+1));
             $("#btnNextImage").animate({opacity: 1});
-            $("#next").css('background-image', "url('" + img.next().find("a.thumb").attr("data-img-lg") + "')");
+
+            // Preload next 5 images
+            $("#next").html("");
+            var next = img.next();
+            for (var i=0; i < 5 && next.length > 0; i++) {
+                $("#next").append("<img src='" + next.find("a.thumb").attr("data-img-lg") + "'/>");
+                next = next.next();
+            }
         } else {
             $("#btnNextImage").animate({opacity: 0.3});
         }
