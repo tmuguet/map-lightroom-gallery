@@ -1,5 +1,5 @@
 window.onload = function() {
-    var map = L.map('map', {zoomControl: false, boxZoom: false, doubleClickZoom: false, dragging: false, keyboard: false, scrollWheelZoom: false, tap: false}).setView([44.92710337178908, 6.291518211364747], 15);
+    var map = L.map('map', {zoomControl: false, boxZoom: false, doubleClickZoom: false, dragging: false, keyboard: false, scrollWheelZoom: false, tap: false});
 
     var lyr = L.geoportalLayer.WMTS({
         layer  : "ORTHOIMAGERY.ORTHOPHOTOS",
@@ -153,13 +153,6 @@ window.onload = function() {
         });
     });
 
-    // Load thumbnails that are further down the page
-    setTimeout(function(){
-        $("img.delayload").each(function () {
-        $(this).attr('src', $(this).data('src'));
-        $(this).show();
-    }); }, 1200);
-
     var start = new Date();
     var maxTime = 5000;
     var timeoutVal = Math.floor(maxTime/100);
@@ -238,7 +231,19 @@ window.onload = function() {
             }
 
             $("#container").css('background-image', "url('" + link.attr("data-img-lg") + "')").fadeIn(400);
-            $("#legend").text(img.find(".image-desc").text());
+            var title = img.find(".image-title").text();
+            var desc = img.find(".image-desc").text();
+
+            var legend = (title != "" ? "<strong>" + title + "</strong>" : "")
+                + (title != "" && desc != "" ? " - " : "")
+                + desc;
+
+            if (legend != "") {
+                $("#legend").html(legend);
+                $("#legend").show();
+            } else {
+                $("#legend").hide();
+            }
             $("#btnDownloadImage").attr("href", link.attr("data-img-fl"));
         }
         $("#thumbs li").removeClass("selected");
