@@ -26,6 +26,10 @@ AddGridPages {
 	columns=model.nonCSS.numCols,
 }
 AddPage {
+	template="info.json",
+	filename="info.json"
+}
+AddPage {
 	template="track.gpx",
 	filename="track.gpx"
 }

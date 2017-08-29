@@ -1,0 +1,81 @@
+<%
+--[[
+Map Lightroom Web Gallery - https://github.com/tmuguet/map-lightroom-gallery
+
+Copyright (c) 2017 Thomas Muguet (https://tmuguet.me)
+Portions Copyright (c) 2015-2016 Justin Briggs (http://trialstravails.blogspot.com) from The Gallerific Lightroom Web Gallery
+
+Licensed under the MIT License:
+   http://www.opensource.org/licenses/mit-license.php
+ ]]
+
+local LrApplication = import 'LrApplication'
+local LrFileUtils = import 'LrFileUtils'
+local LrPathUtils = import 'LrPathUtils'
+local catalog = LrApplication.activeCatalog ()
+local idToPhoto = {}
+for _, photo in ipairs (catalog:getAllPhotos ()) do
+    idToPhoto [photo.localIdentifier] = photo
+end
+
+local featuredIm = nil
+local featuredPhoto = nil
+for i=1,numImages do
+    local im = getImage(i)
+    local p = idToPhoto[im.imageID]
+
+    if p:getFormattedMetadata("label") ~= "" then
+        -- Has a label, use this one
+        featureIm = im
+        featurePhoto = p
+        break
+    end
+
+    -- Fallback: use first best rated photo
+    if featuredPhoto == nil or featuredPhoto:getRawMetadata("rating") < p:getRawMetadata("rating") then
+        featureIm = im
+        featurePhoto = p
+    end
+end
+
+function getMapData(im, photo)
+    local content_gps=""
+    local content_zoom="17"
+    local gpsCoords = photo:getRawMetadata("gps")
+    local zoom = im.metadata.zoomLevel
+
+    if (gpsCoords ~= nil) then
+        content_gps = "\"lat\": " .. gpsCoords['latitude'] .. ", \"lng\": " .. gpsCoords['longitude'] .. ", "
+    end
+
+    if (zoom ~= nil and zoom ~= "") then
+        content_zoom = zoom
+    end
+
+    return content_gps .. " \"zoom\": " .. content_zoom .. ", "
+end
+
+function escapeQuotes(str)
+	return string.gsub(str, "\"", "\\\"")
+end
+
+%>{
+    "title": "<%= escapeQuotes(model.metadata.collectionTitle.value) %>",
+    "description": "<%= escapeQuotes(model.metadata.collectionDescription.value) %>",
+    "featured": "<%= featureIm.exportFilename %>.jpg"
+    "list": [
+<%
+for i=1,numImages do
+    local image = getImage(i)
+    local imgFn = image.exportFilename .. ".jpg"
+%>
+        {
+            "image": "<%= imgFn %>",
+            <%= getMapData(image, idToPhoto[image.imageID]) %>
+
+            "title": "<%= escapeQuotes(image.metadata.title) %>",
+            "description": "<%= escapeQuotes(image.metadata.description) %>"
+        },
+<% end %>
+    ]
+}
