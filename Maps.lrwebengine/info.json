@@ -62,20 +62,20 @@ end
 %>{
     "title": "<%= escapeQuotes(model.metadata.collectionTitle.value) %>",
     "description": "<%= escapeQuotes(model.metadata.collectionDescription.value) %>",
-    "featured": "<%= featureIm.exportFilename %>.jpg"
-    "list": [
+    "featured": "<%= featureIm.exportFilename %>.jpg",
+    "list": [{}
 <%
 for i=1,numImages do
     local image = getImage(i)
     local imgFn = image.exportFilename .. ".jpg"
 %>
-        {
+        ,{
             "image": "<%= imgFn %>",
             <%= getMapData(image, idToPhoto[image.imageID]) %>
 
             "title": "<%= escapeQuotes(image.metadata.title) %>",
             "description": "<%= escapeQuotes(image.metadata.description) %>"
-        },
+        }
 <% end %>
     ]
 }
