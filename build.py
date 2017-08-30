@@ -29,7 +29,7 @@ map_mako = {
 
     "loopIndex": "loop.index",
     "loopImage": "img['image']",
-    "loopData": 'data-lat="${img[\'lat\']}" data-lng="${img[\'lng\']}" data-zoom="${img[\'zoom\']}"',
+    "loopData": '${\'data-lat="\' + str(img[\'lat\']) + \'"\' if \'lat\' in img else \'\'} ${\'data-lng="\' + str(img[\'lng\']) + \'"\' if \'lng\' in img else \'\'} data-zoom="${img[\'zoom\']}"',
     "loopTitle": "img['title']",
     "loopDescription": "img['description']",
 }
