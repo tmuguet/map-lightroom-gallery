@@ -1,4 +1,42 @@
 window.onload = function() {
+
+    var colorMap = {'red': '#D63E2A', 'orange': '#F59630', 'green': '#72B026', 'blue': '#38AADD', 'purple': '#D252B9',
+        'darkred': '#A23336', 'darkblue': '#0067A3', 'darkgreen': '#728224', 'darkpurple': '#5B396B', 'cadetblue': '#436978',
+        'lightred': '#FF8E7F', 'beige': '#FFCB92', 'lightgreen': '#BBF970', 'lightblue': '#8ADAFF', 'pink': '#FF91EA',
+        'white': '#FBFBFB', 'lightgray': '#A3A3A3', 'gray': '#575757', 'black': '#303030'};
+    var colors = ['blue', 'green', 'orange', 'purple', 'red', 'darkblue', 'darkpurple', 'lightblue', 'lightgreen', 'beige', 'pink', 'lightred'];
+    var currentColor = 0;
+    function nextColor() {
+        currentColor = (currentColor + 1) % colors.length;
+        return currentColor;
+    }
+
+    L.Marker.include({
+        __type: 'waypoint',
+        __color: currentColor,
+        getColorCode: function() {return colors[this.__color];},
+        getColorRgb: function() {return colorMap[colors[this.__color]];},
+        getColorIndex: function() {return this.__color;},
+        setColorIndex: function(i) {this.__color = i;},
+        getType: function() {return this.__type;},
+        setType: function(type) {
+            this.__type = type;
+            if (type == "waypoint") {
+                this.setIcon(L.AwesomeMarkers.icon({
+                    icon: 'circle',
+                    markerColor: this.getColorCode(),
+                    prefix: 'fa'
+                }));
+            } else {
+                this.setIcon(L.AwesomeMarkers.icon({
+                    icon: 'asterisk',
+                    markerColor: this.getColorCode(),
+                    prefix: 'fa'
+                }));
+            }
+        }
+    });
+
     var map = L.map('map', {zoomControl: false, boxZoom: false, doubleClickZoom: false, dragging: false, keyboard: false, scrollWheelZoom: false, tap: false});
 
     var lyr = L.geoportalLayer.WMTS({
@@ -41,7 +79,11 @@ window.onload = function() {
                             var item = chart.config.data.datasets[0].data[idx];
                             if (plotMarker == null) {
                                 plotMarker = L.marker(L.latLng(item.lat, item.lng), {
-                                    icon : new L.Icon.Default("orange"),
+                                    icon : L.AwesomeMarkers.icon({
+                                        icon: 'area-chart',
+                                        markerColor: 'cadetblue',
+                                        prefix: 'fa'
+                                    }),
                                     draggable : false,
                                     clickable : false,
                                     zIndexOffset : 10000
@@ -116,7 +158,28 @@ window.onload = function() {
     var def = $.Deferred(function() {
         var self = this;
 
-        var line = new L.GPX("track.gpx", {async: true});
+        var markers = [];
+        var line = new L.GPX("track.gpx", {async: true, onSuccess: function() {}});
+        line.on('addline', function(e) {
+            if (markers.length == 0) {
+                var start = e.line.getLatLngs()[0];
+                var marker = L.marker(start, {draggable: false, opacity: 0.5});
+                marker.setColorIndex(currentColor);
+                marker.setType('waypoint');
+                marker.addTo(map);
+                markers.push(marker);
+            }
+
+            e.line.setStyle({weight: 5, color: markers[markers.length-1].getColorRgb(), opacity: 0.75});
+
+            var end = e.line.getLatLngs()[e.line.getLatLngs().length-1];
+            var marker2 = L.marker(end, {draggable: false, opacity: 0.5});
+            marker2.setColorIndex(nextColor());
+            marker2.setType('step');
+            marker2.addTo(map);
+            markers.push(marker2);
+
+        });
         line.on('failed', function(e) {
             console.log("Failed to retrieve track");
             $("#chart").parent().remove();  // Remove chart (don't need it)
@@ -127,6 +190,7 @@ window.onload = function() {
         });
         line.on('loaded', function(e) {
             track = e.target;
+
             map.fitBounds(track.getBounds(), {padding: [200, 200]});
             track.addTo(map);
 

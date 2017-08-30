@@ -45,23 +45,15 @@ var _HOUR_IN_MILLIS = 60 * _MINUTE_IN_MILLIS;
 var _DAY_IN_MILLIS = 24 * _HOUR_IN_MILLIS;
 
 var _DEFAULT_MARKER_OPTS = {
-  startIconUrl: './res/leaflet/pin-icon-start.png',
-  endIconUrl: './res/leaflet/pin-icon-end.png',
-  shadowUrl: './res/leaflet/pin-shadow.png',
-  wptIconUrls : {
-    '': './res/leaflet/pin-icon-wpt.png',
-  },
-  iconSize: [33, 50],
-  shadowSize: [50, 50],
-  iconAnchor: [16, 45],
-  shadowAnchor: [16, 47],
   clickable: false
 };
 var _DEFAULT_POLYLINE_OPTS = {
   color: 'blue'
 };
 var _DEFAULT_GPX_OPTS = {
-  parseElements: ['track', 'route', 'waypoint']
+  parseElements: ['track', 'route', 'waypoint'],
+  onFail: function() {},
+  onSuccess: function() {},
 };
 L.GPX = L.FeatureGroup.extend({
   initialize: function(gpx, options) {
@@ -219,16 +211,25 @@ L.GPX = L.FeatureGroup.extend({
     if (options == undefined) options = this.options;
 
     var req = new window.XMLHttpRequest();
-    req.open('GET', url, async);
     try {
-      req.overrideMimeType('text/xml'); // unsupported by IE
-    } catch(e) {}
-    req.onreadystatechange = function() {
-      if (req.readyState != 4) return;
-      if(req.status == 200) cb(req.responseXML, options);
-      else _this.fire('failed');    // Failed to load file (Not found for instance)
-    };
-    req.send(null);
+        req.open('GET', url, async);
+        try {
+          req.overrideMimeType('text/xml'); // unsupported by IE
+        } catch(e) {}
+        req.onreadystatechange = function() {
+          if (req.readyState != 4) return;
+          if(req.status == 200) cb(req.responseXML, options);
+          else {
+              options.onFail();
+              _this.fire('failed');    // Failed to load file (Not found for instance)
+          }
+        };
+        req.send(null);
+    } catch(e) {
+        console.log(e);
+        options.onFail();
+        _this.fire('failed');    // Failed to load file (URI is malformed for instance)
+    }
   },
 
   _parse: function(input, options, async) {
@@ -236,16 +237,19 @@ L.GPX = L.FeatureGroup.extend({
     var cb = function(gpx, options) {
       if (gpx == null) {
         // Failed to parse XML
+        options.onFail();
         _this.fire('failed');
         return;
       }
       var layers = _this._parse_gpx_data(gpx, options);
       if (!layers) {
         // Nothing to show
+        options.onFail();
         _this.fire('failed');
         return;
       }
       _this.addLayer(layers);
+      options.onSuccess(_this);
       _this.fire('loaded');
     }
     if (input.substr(0,1)==='<') { // direct XML has to start with a <
