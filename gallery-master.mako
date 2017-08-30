@@ -1,4 +1,24 @@
-<%
+%if output == "mako":
+<%text><%
+import HTMLParser
+
+class MLStripper(HTMLParser.HTMLParser):
+    def __init__(self):
+        self.reset()
+        self.fed = []
+    def handle_data(self, d):
+        self.fed.append(d)
+    def get_data(self):
+        return ''.join(self.fed)
+
+def strip_tags(html):
+    s = MLStripper()
+    s.feed(html)
+    return s.get_data()
+
+%></%text>
+%else:
+<%text><%
 --[[
 Map Lightroom Web Gallery - https://github.com/tmuguet/map-lightroom-gallery
 
@@ -75,47 +95,52 @@ function stripTags(str)
 	return string.gsub(str, "(%b<>)", "")
 end
 
-%>
-
-
-
+%></%text>
+%endif
+<%def name="echo(x)">${items['echo_start']}${x}${items['echo_end']}</%def>
+<%def name="echo_strip(x)">${items['echo_strip_start']}${x}${items['echo_strip_end']}</%def>
+%if output == 'mako':
+<% resFolder = "${site['root']}/res" %>
+%else:
+<% resFolder = "./res" %>
+%endif
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 		<meta name="viewport"  content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-		<meta name="generator" content="Map Lightroom Web Gallery plugin v0.3.0 for Adobe Photoshop Lightroom" />
-		<meta name="Keywords" content="<%= model.metadata.keywords %>" />
-<% if model.nonCSS.noIndexing then %>
+		<meta name="generator" content="Map Lightroom Web Gallery plugin v${version} for Adobe Photoshop Lightroom" />
+		<meta name="Keywords" content="${echo(items['keywords'])}" />
+${items['if']}${items['noIndexing']}${items['then']}
 		<meta name="robots" content="noindex,nofollow" />
-<% else %>
+${items['else']}
 		<meta name="robots" content="index,follow" />
-<% end %>
+${items['endif']}
 
-		<title><%= stripTags(model.metadata.collectionTitle.value) %> - <%= stripTags(model.metadata.siteTitle.value) %></title>
-		<meta property="og:title" content="<%= stripTags(model.metadata.collectionTitle.value) %> - <%= stripTags(model.metadata.siteTitle.value) %>"/>
+		<title>${echo_strip(items['galleryTitle'])} - ${echo_strip(items['siteTitle'])}</title>
+		<meta property="og:title" content="${echo_strip(items['galleryTitle'])} - ${echo_strip(items['siteTitle'])}"/>
 		<meta property="og:type" content="website"/>
 
-		<meta property="og:description" content="<%= stripTags(model.metadata.collectionDescription.value) %>"/>
-		<meta property="og:image" content="<%= model.metadata.canonicalUrlBase %>/im/lg/<%= featuredImage %>"/>
-		<meta property="og:url" content="<%= model.metadata.canonicalUrlBase %>/index.html" />
-		<link rel="canonical" href="<%= model.metadata.canonicalUrlBase %>/index.html" />
+		<meta property="og:description" content="${echo_strip(items['galleryDescription'])}"/>
+		<meta property="og:image" content="${echo(items['canonicalUrlBase'])}/im/lg/${echo(items['galleryFeatured'])}"/>
+		<meta property="og:url" content="${echo(items['canonicalUrlBase'])}/index.html" />
+		<link rel="canonical" href="${echo(items['canonicalUrlBase'])}/index.html" />
 
-        <link href="./res/css/gallery.css" rel="stylesheet">
+        <link href="${resFolder}/css/gallery.css" rel="stylesheet">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-        <link href="./res/css/jquery-ui.min.css" rel="stylesheet">
+        <link href="${resFolder}/css/jquery-ui.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
-        <link rel="stylesheet" href="./res/leaflet/GpPluginLeaflet.css" />
+        <link rel="stylesheet" href="${resFolder}/leaflet/GpPluginLeaflet.css" />
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script src="./res/js/jquery.plugins.js"></script>
+        <script src="${resFolder}/js/jquery.plugins.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.touchswipe/1.6.9/jquery.touchSwipe.min.js"></script>
 
         <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
 
-        <script src="./res/leaflet/GpPluginLeaflet.js"></script>
+        <script src="${resFolder}/leaflet/GpPluginLeaflet.js"></script>
         <script>
-            var keyIgn = '<%= model.nonCSS.ignApiKey %>';
+            var keyIgn = '${echo(items['ignKey'])}';
         </script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js" integrity="sha256-GcknncGKzlKm69d+sp+k3A2NyQE+jnu43aBl6rrDN2I=" crossorigin="anonymous"></script>
@@ -123,15 +148,19 @@ end
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" integrity="sha256-EFpFyBbuttUJtoocYzsBnERPWee2JYz4cn5nkUBjW0A=" crossorigin="anonymous" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.min.js" integrity="sha256-IqiRR5X1QtAdcq5lG4vBB1/WxwrRCkkjno4pfvWyag0=" crossorigin="anonymous"></script>
 
-        <script src="./res/leaflet/gpx.js"></script>
-        <script src="./res/leaflet/L.Polyline.SnakeAnim.js"></script>
-        <script src="./res/js/jquery-ui.min.js"></script>
+        <script src="${resFolder}/leaflet/gpx.js"></script>
+        <script src="${resFolder}/leaflet/L.Polyline.SnakeAnim.js"></script>
+        <script src="${resFolder}/js/jquery-ui.min.js"></script>
 	</head>
 	<body>
 
-<% if mode ~= 'preview' then %>
+%if output == 'lightroom':
+<%text><% if mode ~= 'preview' then %></%text>
+%endif
 		<div id="page_loading"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></div>
-<% end %>
+%if output == 'lightroom':
+<%text><% end %></%text>
+%endif
 
         <div id="header">
         	<div id="progress"></div>
@@ -140,8 +169,8 @@ end
                 <a id="btnPrevImage" href="#0" role="button"><i class="fa fa-angle-left" aria-hidden="true"></i> Previous image</a> | <a id="btnDownloadImage" href="#"><i class="fa fa-file-photo-o" aria-hidden="true"></i> Download image</a> | <a id="btnNextImage" href="#1" role="button">Next image <i class="fa fa-angle-right" aria-hidden="true"></i></a>
             </div>
         	<div id="title">
-        		<h1><a href="<%= model.metadata.siteindex %>/"><%= model.metadata.siteTitle.value %></a></h1>
-        		<h2><a href="#0"><%= model.metadata.collectionTitle.value %></a></h2>
+        		<h1><a href="${echo(items['root'])}/">${echo(items['siteTitle'])}</a></h1>
+        		<h2><a href="#0">${echo(items['galleryTitle'])}</a></h2>
         	</div>
         </div>
 
@@ -152,8 +181,8 @@ end
 		<div id="cover-container">
     		<div>
                 <div id="cover">
-                    <h2><%= model.metadata.collectionTitle.value %></h2>
-                    <p><%= model.metadata.collectionDescription.value %></p>
+                    <h2>${echo(items['galleryTitle'])}</h2>
+                    <p>${echo(items['galleryDescription'])}</p>
                     <div>
                         <canvas id="chart" width="100%" height="100%"></canvas>
                     </div>
@@ -161,18 +190,30 @@ end
                 <div id="thumbs">
                     <ul>
                         <li></li>
-<lr:ThumbnailGrid><lr:GridPhotoCell>
-<% imgFn = image.exportFilename .. ".jpg" %>
+%if output == 'mako':
+<%text>%for img in gallery['list']:
+<%
+    if loop.first:
+        continue
+%></%text>
+%else:
+<%text><lr:ThumbnailGrid><lr:GridPhotoCell>
+<% imgFn = image.exportFilename .. ".jpg" %></%text>
+%endif
                         <li>
-                            <a class="thumb" href="#<%= cellIndex %>" data-img-lg="im/lg/<%= imgFn %>" data-img-fl="im/fl/<%= imgFn %>" style="background-image: url('im/th/<%= imgFn %>');" <%= getMapData(image, idToPhoto[image.imageID]) %>></a>
+                            <a class="thumb" href="#${echo(items['loopIndex'])}" data-img-lg="im/lg/${echo(items['loopImage'])}" data-img-fl="im/fl/${echo(items['loopImage'])}" style="background-image: url('im/th/${echo(items['loopImage'])}');" ${items['loopData']}></a>
                             <div class="caption">
-                                <div class="image-title"><%= image.metadata.title %></div>
-                                <div class="image-desc"><%= image.metadata.description %></div>
+                                <div class="image-title">${echo(items['loopTitle'])}</div>
+                                <div class="image-desc">${echo(items['loopDescription'])}</div>
                             </div>
                         </li>
-</lr:GridPhotoCell>
+%if output == 'mako':
+<%text>%endfor</%text>
+%else:
+<%text></lr:GridPhotoCell>
 <lr:GridRowEnd></lr:GridRowEnd>
-</lr:ThumbnailGrid>
+</lr:ThumbnailGrid></%text>
+%endif
                     </ul>
                 </div>
             </div>
@@ -184,7 +225,7 @@ end
             <div id="legend"></div>
         </div>
 
-<script src="./res/js/script.js"></script>
+<script src="${resFolder}/js/script.js"></script>
 
 	</body>
 </html>

@@ -62,6 +62,12 @@ end
 %>{
     "title": "<%= escapeQuotes(model.metadata.collectionTitle.value) %>",
     "description": "<%= escapeQuotes(model.metadata.collectionDescription.value) %>",
+    "keywords": "<%= escapeQuotes(model.metadata.keywords) %>",
+<% if model.nonCSS.noIndexing then %>
+    "noIndexing": true,
+<% else %>
+    "noIndexing": false,
+<% end %>
     "featured": "<%= featureIm.exportFilename %>.jpg",
     "list": [{}
 <%
