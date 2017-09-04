@@ -35,11 +35,21 @@ with open(os.path.join(dir_path, 'params.json'), 'r') as site_data:
     galleries = []
 
     for g in dirs:
+        print "Generating %s..." % g
+        if not os.path.isfile(os.path.join('.', g, 'track.gpx')):
+            print "[%s] Warning: could not find track.gpx" % (g)
+        elif os.stat(os.path.join('.', g, 'track.gpx')).st_size == 0:
+            print "[%s] Warning: track.gpx is empty" % (g)
+
         with open(os.path.join(g, 'info.json'), 'r') as gallery_data:
             gallery = json.load(gallery_data)
 
             gallery['path'] = g
             gallery['canonicalUrlBase'] = site['root'] + ('' if site['root'].endswith('/') else '/') + g + '/'
+
+            for img in gallery['list']:
+                if 'description' not in img or img['description'] == "RICOH IMAGING":
+                    img['description'] = ""
 
             with open(os.path.join(g, 'index.html'), 'w') as out:
                 out.write(gallery_template.render(site=site, gallery=gallery))
@@ -49,7 +59,7 @@ with open(os.path.join(dir_path, 'params.json'), 'r') as site_data:
 
             galleries.append(gallery)
 
-
+    print "Generating homepage..."
     with open('index.html', 'w') as out:
         out.write(homepage_template.render(site=site, galleries=galleries))
 

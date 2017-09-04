@@ -17,8 +17,10 @@ a:hover, button:hover {
     color: #eeeeee;
 }
 
-#header {position: absolute; top: 0px; left: 0px; right: 0px; background-color: rgba(0, 0, 0, 0.5); text-align: left; z-index: 2000;}
+#header {position: absolute; top: 0px; left: 0px; right: 0px; background-color: rgba(0, 0, 0, 0.5); text-align: left; z-index: 2000; min-height: 42px;}
 #header h1, #header h2 {display: inline-block; margin: 0px; padding: 0px;}
+#header h1 {line-height: 1.1; font-weight: 500;}
+#header h1 img {width: 40px; height: 40px; float: left; margin-right: 10px;}
 #header h2::before {content: " - ";}
 #header button {background-color: inherit; border: none; cursor: pointer;}
 #header button, #header a {padding: 0px 8px;}
@@ -30,9 +32,9 @@ a:hover, button:hover {
 
 #map {position: absolute; width: 100%; top: 0px; bottom: 0px; right: 0px;}
 
-#cover-container {position: absolute; left: 0px; top: 0px; bottom: 0px; right: 0px;  overflow: hidden; background-color: rgba(0, 0, 0, 0.5); z-index: 1000}
+#cover-container {position: absolute; left: 0px; top: 0px; bottom: 0px; right: 0px;  overflow: hidden; z-index: 1000}
 #cover-container > div {position: absolute; left: 0px; bottom: 0px; right: 0px;}
-#cover {margin-bottom: 20px;}
+#cover {margin-bottom: 0px; background-color: rgba(0, 0, 0, 0.5); }
 #cover > div {display: block; height: 200px; margin-top: 50px;}
 
 #thumbs {text-align: left;}

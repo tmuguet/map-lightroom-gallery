@@ -22,6 +22,11 @@ def strip_tags(html):
 		<meta name="viewport"  content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" /> <!-- for mobile devices -->
 		<meta name="Keywords" content="" />
 		<meta name="robots" content="index,follow" />
+        <link rel="shortcut icon" href="${site['root']}/res/ico/logo.ico">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="${site['root']}/res/ico/logo-144.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="${site['root']}/res/ico/logo-114.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="${site['root']}/res/ico/logo-medium-72.png">
+        <link rel="apple-touch-icon-precomposed" href="${site['root']}/res/ico/logo-medium-57.png">
 
 		<title>${site['title']|strip_tags}</title>
 		<meta property="og:title" content="${site['title']|strip_tags}" /> <!-- opengraph used by facebook et al -->
@@ -49,7 +54,7 @@ def strip_tags(html):
 
 		<div id="header">
         	<div id="title">
-        		<h1><a href="${site['root']}">${site['title']}</a></h1>
+        		<h1><a href="${site['root']}"><img src="${site['root']}/res/logo.png"/> ${site['title']}</a></h1>
         	</div>
         </div>
 

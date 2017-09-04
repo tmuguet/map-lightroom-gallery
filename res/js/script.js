@@ -191,7 +191,7 @@ window.onload = function() {
         line.on('loaded', function(e) {
             track = e.target;
 
-            map.fitBounds(track.getBounds(), {padding: [200, 200]});
+            map.fitBounds(track.getBounds(), {paddingTopLeft: [0, 0], paddingBottomRight: [0, $("#thumbs").height()]});
             track.addTo(map);
 
             var latlngs = track.getLatLngs();

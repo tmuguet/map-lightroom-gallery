@@ -39,33 +39,43 @@ window.onload = function() {
         var self = $(this);
         var trackName = self.attr('data-track');
 
-        promises.push(loadTrack(trackName).done(function() {
-            self.data("trackData", this);
-            if (bounds == undefined)
-                bounds = this.getBounds();
-            else
-                bounds.extend(this.getBounds());
-        }).fail(function() {
-            self.removeAttr("data-track");
-        }));
+        promises.push(
+            $.Deferred(function() {
+                var d = this;
+
+                loadTrack(trackName).done(function() {
+                    self.data("trackData", this);
+                    if (bounds == undefined)
+                        bounds = this.getBounds();
+                    else
+                        bounds.extend(this.getBounds());
+
+                    d.resolve();
+                }).fail(function() {
+                    self.removeAttr("data-track");
+                    d.resolve();
+                });
+            })
+        );
     });
 
     var timeout = undefined;
-    $.when.apply($, promises).always(function() {
+    var fitOpts = {paddingTopLeft: [0, 0], paddingBottomRight: [0, $("#cover").height()]};
+    $.when.apply($, promises).done(function() {
         if (bounds != undefined) {
-            map.fitBounds(bounds, {padding: [200, 200]});
+            map.fitBounds(bounds, fitOpts);
 
             $("li[data-track]").hover(function() {
                 var track = $(this).data("trackData");
                 track.setStyle({color: '#72B026'});
                 if (timeout)
                     clearTimeout(timeout);
-                timeout = setTimeout(function() {map.flyToBounds(track.getBounds(), {padding: [200, 200]});}, 500);
+                timeout = setTimeout(function() {map.flyToBounds(track.getBounds(), fitOpts);}, 500);
             }, function() {
                 $(this).data("trackData").setStyle({color: '#38AADD'});
                 if (timeout)
                     clearTimeout(timeout);
-                map.flyToBounds(bounds, {padding: [200, 200]});
+                map.flyToBounds(bounds, fitOpts);
             });
         }
     });

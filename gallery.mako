@@ -31,6 +31,11 @@ def strip_tags(html):
 %else:
 		<meta name="robots" content="index,follow" />
 %endif
+        <link rel="shortcut icon" href="${site['root']}/res/ico/logo.ico">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="${site['root']}/res/ico/logo-144.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="${site['root']}/res/ico/logo-114.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="${site['root']}/res/ico/logo-medium-72.png">
+        <link rel="apple-touch-icon-precomposed" href="${site['root']}/res/ico/logo-medium-57.png">
 
 		<title>${gallery['title']|strip_tags} - ${site['title']|strip_tags}</title>
 		<meta property="og:title" content="${gallery['title']|strip_tags} - ${site['title']|strip_tags}"/>
@@ -78,7 +83,7 @@ def strip_tags(html):
                 <a id="btnPrevImage" href="#0" role="button"><i class="fa fa-angle-left" aria-hidden="true"></i> Previous image</a> | <a id="btnDownloadImage" href="#"><i class="fa fa-file-photo-o" aria-hidden="true"></i> Download image</a> | <a id="btnNextImage" href="#1" role="button">Next image <i class="fa fa-angle-right" aria-hidden="true"></i></a>
             </div>
         	<div id="title">
-        		<h1><a href="${site['root']}/">${site['title']}</a></h1>
+        		<h1><a href="${site['root']}/"><img src="${site['root']}/res/logo.png"/> ${site['title']}</a></h1>
         		<h2><a href="#0">${gallery['title']}</a></h2>
         	</div>
         </div>

@@ -116,6 +116,11 @@ ${items['if']}${items['noIndexing']}${items['then']}
 ${items['else']}
 		<meta name="robots" content="index,follow" />
 ${items['endif']}
+        <link rel="shortcut icon" href="${resFolder}/ico/logo.ico">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="${resFolder}/ico/logo-144.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="${resFolder}/ico/logo-114.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="${resFolder}/ico/logo-medium-72.png">
+        <link rel="apple-touch-icon-precomposed" href="${resFolder}/ico/logo-medium-57.png">
 
 		<title>${echo_strip(items['galleryTitle'])} - ${echo_strip(items['siteTitle'])}</title>
 		<meta property="og:title" content="${echo_strip(items['galleryTitle'])} - ${echo_strip(items['siteTitle'])}"/>
@@ -169,7 +174,7 @@ ${items['endif']}
                 <a id="btnPrevImage" href="#0" role="button"><i class="fa fa-angle-left" aria-hidden="true"></i> Previous image</a> | <a id="btnDownloadImage" href="#"><i class="fa fa-file-photo-o" aria-hidden="true"></i> Download image</a> | <a id="btnNextImage" href="#1" role="button">Next image <i class="fa fa-angle-right" aria-hidden="true"></i></a>
             </div>
         	<div id="title">
-        		<h1><a href="${echo(items['root'])}/">${echo(items['siteTitle'])}</a></h1>
+        		<h1><a href="${echo(items['root'])}/"><img src="${resFolder}/logo.png"/> ${echo(items['siteTitle'])}</a></h1>
         		<h2><a href="#0">${echo(items['galleryTitle'])}</a></h2>
         	</div>
         </div>

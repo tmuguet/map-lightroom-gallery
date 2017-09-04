@@ -91,6 +91,11 @@ end
 <% else %>
 		<meta name="robots" content="index,follow" />
 <% end %>
+        <link rel="shortcut icon" href="./res/ico/logo.ico">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="./res/ico/logo-144.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="./res/ico/logo-114.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="./res/ico/logo-medium-72.png">
+        <link rel="apple-touch-icon-precomposed" href="./res/ico/logo-medium-57.png">
 
 		<title><%= stripTags(model.metadata.collectionTitle.value) %> - <%= stripTags(model.metadata.siteTitle.value) %></title>
 		<meta property="og:title" content="<%= stripTags(model.metadata.collectionTitle.value) %> - <%= stripTags(model.metadata.siteTitle.value) %>"/>
@@ -140,7 +145,7 @@ end
                 <a id="btnPrevImage" href="#0" role="button"><i class="fa fa-angle-left" aria-hidden="true"></i> Previous image</a> | <a id="btnDownloadImage" href="#"><i class="fa fa-file-photo-o" aria-hidden="true"></i> Download image</a> | <a id="btnNextImage" href="#1" role="button">Next image <i class="fa fa-angle-right" aria-hidden="true"></i></a>
             </div>
         	<div id="title">
-        		<h1><a href="<%= model.metadata.siteindex %>/"><%= model.metadata.siteTitle.value %></a></h1>
+        		<h1><a href="<%= model.metadata.siteindex %>/"><img src="./res/logo.png"/> <%= model.metadata.siteTitle.value %></a></h1>
         		<h2><a href="#0"><%= model.metadata.collectionTitle.value %></a></h2>
         	</div>
         </div>

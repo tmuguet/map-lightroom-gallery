@@ -15,8 +15,10 @@ a:hover, button:hover {
     color: #eeeeee;
 }
 
-#header {position: absolute; top: 0px; left: 0px; right: 0px; background-color: rgba(0, 0, 0, 0.5); text-align: left; z-index: 2000;}
+#header {position: absolute; top: 0px; left: 0px; right: 0px; background-color: rgba(0, 0, 0, 0.5); text-align: left; z-index: 2000; min-height: 42px;}
 #header h1, #header h2 {display: inline-block; margin: 0px; padding: 0px;}
+#header h1 {line-height: 1.1; font-weight: 500;}
+#header h1 img {width: 40px; height: 40px; float: left; margin-right: 10px;}
 #header h2::before {content: " - ";}
 #header button {background-color: inherit; border: none; cursor: pointer;}
 #header button, #header a {padding: 0px 8px;}
