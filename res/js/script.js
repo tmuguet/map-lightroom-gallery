@@ -21,15 +21,21 @@ window.onload = function() {
         getType: function() {return this.__type;},
         setType: function(type) {
             this.__type = type;
-            if (type == "waypoint") {
+            if (type == "step") {
                 this.setIcon(L.AwesomeMarkers.icon({
-                    icon: 'circle',
+                    icon: 'asterisk',
                     markerColor: this.getColorCode(),
+                    prefix: 'fa'
+                }));
+            } else if (type == "photo") {
+                this.setIcon(L.AwesomeMarkers.icon({
+                    icon: 'camera',
+                    markerColor: 'gray',
                     prefix: 'fa'
                 }));
             } else {
                 this.setIcon(L.AwesomeMarkers.icon({
-                    icon: 'asterisk',
+                    icon: 'circle',
                     markerColor: this.getColorCode(),
                     prefix: 'fa'
                 }));
@@ -184,8 +190,12 @@ window.onload = function() {
             console.log("Failed to retrieve track");
             $("#chart").parent().remove();  // Remove chart (don't need it)
 
-            var firstThumb = $("#thumbs a.thumb[data-lat]:eq(0)");  // Take first thumb that has location data and use it for initial state of map
-            map.flyTo([firstThumb.attr("data-lat"), firstThumb.attr("data-lng")], firstThumb.attr("data-zoom")-2);
+            var latlngs = [];
+            $("#thumbs a.thumb[data-lat]").each(function() {
+                latlngs.push(L.latLng($(this).attr("data-lat"), $(this).attr("data-lng")));
+            });
+            var bounds = L.latLngBounds(latlngs);
+            map.fitBounds(bounds, {paddingTopLeft: [0, 0], paddingBottomRight: [0, $("#thumbs").height()]});
             def.resolve();
         });
         line.on('loaded', function(e) {
@@ -215,7 +225,16 @@ window.onload = function() {
             def.resolve();
             track.snakeIn();
         });
+
+        $("#thumbs a.thumb[data-lat]").each(function() {
+            var marker = L.marker([$(this).attr("data-lat"), $(this).attr("data-lng")], {draggable: false, opacity: 0.2});
+            marker.setType('photo');
+            marker.addTo(map);
+            $(this).data("marker", marker);
+        });
+        $("#map").data("currentMarker", undefined);
     });
+
 
     var start = new Date();
     var maxTime = 5000;
@@ -292,6 +311,14 @@ window.onload = function() {
                 });
                 if (flyTo)
                     map.flyTo([link.attr("data-lat"), link.attr("data-lng")], link.attr("data-zoom"));
+            }
+
+            if ($("#map").data("currentMarker") != undefined)
+                $("#map").data("currentMarker").setOpacity(0.2);
+
+            if (flyTo) {
+                $("#map").data("currentMarker", link.data("marker"));
+                link.data("marker").setOpacity(1);
             }
 
             $("#container").css('background-image', "url('" + link.attr("data-img-lg") + "')").fadeIn(400);
