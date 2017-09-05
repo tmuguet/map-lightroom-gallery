@@ -195,12 +195,14 @@ window.onload = function() {
                 latlngs.push(L.latLng($(this).attr("data-lat"), $(this).attr("data-lng")));
             });
             var bounds = L.latLngBounds(latlngs);
+            $("#map").data("bounds", bounds);
             map.fitBounds(bounds, {paddingTopLeft: [0, 0], paddingBottomRight: [0, $("#thumbs").height()]});
             def.resolve();
         });
         line.on('loaded', function(e) {
             track = e.target;
 
+            $("#map").data("bounds", track.getBounds());
             map.fitBounds(track.getBounds(), {paddingTopLeft: [0, 0], paddingBottomRight: [0, $("#thumbs").height()]});
             track.addTo(map);
 
@@ -277,8 +279,8 @@ window.onload = function() {
                 },
                 complete: function() {
                     map.invalidateSize(false);
-                    if (track && selectedIndex > 0)
-                        map.flyToBounds(track.getBounds(), {padding: [200, 200]});
+                    if (selectedIndex > 0)
+                        map.flyToBounds($("#map").data("bounds"), {paddingTopLeft: [0, 0], paddingBottomRight: [0, $("#thumbs").height()]});
                 },
             });
             $("#container").fadeOut(400);
