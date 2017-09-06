@@ -41,7 +41,7 @@ with open(os.path.join(dir_path, 'params.json'), 'r') as site_data:
             gallery = json.load(gallery_data)
 
             gallery['path'] = g
-            gallery['canonicalUrlBase'] = site['root'] + ('' if site['root'].endswith('/') else '/') + g + '/'
+            gallery['canonicalUrlBase'] = site['host'] + site['root'] + '/' + g
 
             if not os.path.isfile(os.path.join('.', g, 'track.gpx')):
                 print "[%s] Warning: could not find track.gpx" % (g)

@@ -31,9 +31,9 @@ def strip_tags(html):
 		<title>${site['title']|strip_tags}</title>
 		<meta property="og:title" content="${site['title']|strip_tags}" /> <!-- opengraph used by facebook et al -->
 		<meta property="og:type" content="website" />
-		<meta property="og:image" content="${galleries[0]['path']}/im/lg/${galleries[0]['featured']}" />
-		<meta property="og:url" content="${site['root']}/index.html" />
-		<link rel="canonical" href="${site['root']}/index.html" />
+		<meta property="og:image" content="${site['host']}${site['root']}/${galleries[0]['path']}/im/lg/${galleries[0]['featured']}" />
+		<meta property="og:url" content="${site['host']}${site['root']}/index.html" />
+		<link rel="canonical" href="${site['host']}${site['root']}/index.html" />
 
         <link href="${site['root']}/res/css/homepage.css" rel="stylesheet">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />

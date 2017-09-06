@@ -1,5 +1,6 @@
 {
     "title": "thomasmuguet.info",
     "ign-key": "mykey",
-    "root": "http://v9.thomasmuguet.info"
+    "host": "http://v9.thomasmuguet.info",
+    "root": "/my-subdirectory"
 }
