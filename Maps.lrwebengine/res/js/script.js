@@ -66,8 +66,8 @@ window.onload = function() {
                 label: 'Altitude',
                 data: [],
                 fill: false,
-                borderColor: 'rgba(12, 98, 173, 0.8)',
-                backgroundColor: 'rgba(12, 98, 173, 0.8)',
+                borderColor: 'rgba(129, 25, 127, 0.8)',
+                backgroundColor: 'rgba(129, 25, 127, 0.8)',
                 lineTension: 0,
                 pointRadius: 0,
                 yAxisId: 'alt'

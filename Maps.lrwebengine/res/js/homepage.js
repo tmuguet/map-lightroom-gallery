@@ -84,12 +84,18 @@ window.onload = function() {
             map.fitBounds(bounds, fitOpts);
 
             $("li[data-track]").hover(function() {
+                $("li[data-track]").each(function() {
+                    $(this).data("trackData").setStyle({opacity: 0.3});
+                });
                 var track = $(this).data("trackData");
-                track.setStyle({color: '#72B026'});
+                track.setStyle({color: '#81197f', opacity: 1});
                 if (timeout)
                     clearTimeout(timeout);
                 timeout = setTimeout(function() {map.flyToBounds(track.getBounds(), fitOpts);}, 500);
             }, function() {
+                $("li[data-track]").each(function() {
+                    $(this).data("trackData").setStyle({opacity: 0.75});
+                });
                 $(this).data("trackData").setStyle({color: '#38AADD'});
                 if (timeout)
                     clearTimeout(timeout);
@@ -97,11 +103,17 @@ window.onload = function() {
             });
 
             $("li[data-bounds-min-lat]").hover(function() {
+                $("li[data-track]").each(function() {
+                    $(this).data("trackData").setStyle({opacity: 0.3});
+                });
                 var b = $(this).data("bounds");
                 if (timeout)
                     clearTimeout(timeout);
                 timeout = setTimeout(function() {map.flyToBounds(b, fitOpts);}, 500);
             }, function() {
+                $("li[data-track]").each(function() {
+                    $(this).data("trackData").setStyle({opacity: 0.75});
+                });
                 if (timeout)
                     clearTimeout(timeout);
                 map.flyToBounds(bounds, fitOpts);
