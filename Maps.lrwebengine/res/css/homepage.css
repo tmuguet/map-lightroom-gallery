@@ -12,9 +12,11 @@ body {
 a, button {
     color: #CCCCCC;
     text-decoration: none;
+	transition:color .2s ease-out;
 }
 a:hover, button:hover {
     color: #eeeeee;
+	transition:color .3s ease-in;
 }
 
 #header {position: absolute; top: 0px; left: 0px; right: 0px; background-color: rgba(0, 0, 0, 0.5); text-align: left; z-index: 2000; min-height: 42px;}
