@@ -40,6 +40,13 @@ homepage_template = Template(filename=os.path.join(dir_path, "homepage.mako"), i
 with open(os.path.join(dir_path, 'params.json'), 'r') as site_data:
     site = json.load(site_data)
 
+    if 'links' not in site:
+        site['links'] = [[], []]
+
+    if len(site['links']) < 2:
+        site['links'].append([])
+        site['links'].append([])
+
     dirs = [f for f in os.listdir(args.source) if os.path.isdir(os.path.join(args.source, f)) and os.path.isfile(os.path.join(args.source, f, 'info.json'))]
     dirs.sort(reverse=True)
 

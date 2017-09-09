@@ -2,5 +2,9 @@
     "title": "thomasmuguet.info",
     "ign-key": "mykey",
     "host": "http://v9.thomasmuguet.info",
-    "root": "/my-subdirectory"
+    "root": "/my-subdirectory",
+    "links": [
+        [{"title": "map2gpx.fr", "link": "https://map2gpx.fr", "icon": "fa-area-chart"}],
+        [{"title": "My Github profile", "link": "https://github.com/tmuguet", "icon": "fa-github"}, {"title": "My pro. website", "link": "https://tmuguet.me", "icon": "fa-address-card"}]
+    ]
 }

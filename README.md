@@ -61,13 +61,18 @@ The script relies on some parameters within the _params.json_ file:
     "title": "thomasmuguet.info",
     "ign-key": "mykey",
     "host": "http://v9.thomasmuguet.info",
-    "root": "/my-subdirectory"
+    "root": "/my-subdirectory",
+    "links": [
+        [{"title": "map2gpx.fr", "link": "https://map2gpx.fr", "icon": "fa-area-chart"}],
+        [{"title": "My Github profile", "link": "https://github.com/tmuguet", "icon": "fa-github"}, {"title": "My pro. website", "link": "https://tmuguet.me", "icon": "fa-address-card"}]
+    ]
 }
 ```
 * `title`: name of your website (as entered in Lightroom in _Site Title_)
 * `ign-key`: IGN API key (as entered in Lightroom as _IGN API key_)
 * `host`: Complete address of the host of your website (e.g. "http://v9.thomasmuguet.info", without any subfolder) - no trailing slash
 * `root`: root of your website (e.g. "/my-subdirectory") - no trailing slash
+* `links`: optionally, you can define 2 lists of links to be displayed in top-right corner of the homepage
 
 Here, the samples parameters are for a homepage hosted at _http://v9.thomasmuguet.info/my-subdirectory_.
 

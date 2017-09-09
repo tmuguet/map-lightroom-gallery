@@ -36,6 +36,7 @@ def strip_tags(html):
 		<link rel="canonical" href="${site['host']}${site['root']}/index.html" />
 
         <link href="${site['root']}/res/css/homepage.css" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
         <link rel="stylesheet" href="${site['root']}/res/leaflet/GpPluginLeaflet.css" />
 
@@ -53,6 +54,22 @@ def strip_tags(html):
 	<body>
 
 		<div id="header">
+        	<div id="progress"></div>
+            <div id="nav">
+%for link in site['links'][0]:
+%if not loop.first:
+|
+%endif
+                <a href="${link['link']}" title="${link['title']|strip_tags}"><i class="fa ${link['icon']}" aria-hidden="true"></i> ${link['title']|strip_tags}</a>
+%endfor
+<br/>
+%for link in site['links'][1]:
+%if not loop.first:
+|
+%endif
+                <a href="${link['link']}" title="${link['title']|strip_tags}"><i class="fa ${link['icon']}" aria-hidden="true"></i> ${link['title']|strip_tags}</a>
+%endfor
+            </div>
         	<div id="title">
         		<h1><a href="${site['root']}"><img src="${site['root']}/res/logo.png"/> ${site['title']}</a></h1>
         	</div>
