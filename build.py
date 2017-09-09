@@ -72,3 +72,6 @@ with open(os.path.join(dir_path, 'Maps.lrwebengine', 'grid.html'), 'w') as out:
 
 shutil.rmtree(os.path.join(dir_path, 'Maps.lrwebengine', 'res'))
 shutil.copytree(os.path.join(dir_path, 'res'), os.path.join(dir_path, 'Maps.lrwebengine', 'res'))
+
+with open(os.path.join(dir_path, 'Maps.lrwebengine', 'version'), 'w') as out:
+    out.write(version)

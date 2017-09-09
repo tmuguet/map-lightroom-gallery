@@ -60,6 +60,7 @@ function escapeQuotes(str)
 end
 
 %>{
+    "version": "<% includeFile('version') %>",
     "title": "<%= escapeQuotes(model.metadata.collectionTitle.value) %>",
     "description": "<%= escapeQuotes(model.metadata.collectionDescription.value) %>",
     "keywords": "<%= escapeQuotes(model.metadata.keywords) %>",
