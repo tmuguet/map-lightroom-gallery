@@ -34,6 +34,7 @@ with open(os.path.join(args.destination, 'info.json'), 'r') as destination_data:
         source = json.load(source_data)
 
         if args.prepend:
+            destination['featured'] = source['featured']
             destination['list'].pop(0)
             destination['list'] = source['list'] + destination['list']
         else:
