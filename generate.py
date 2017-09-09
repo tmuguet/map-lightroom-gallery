@@ -71,8 +71,12 @@ with open(os.path.join(dir_path, 'params.json'), 'r') as site_data:
 
 
             for img in gallery['list']:
-                if 'description' not in img or img['description'] == "RICOH IMAGING":
+                if 'type' in gallery and gallery['type'] == 'collection':
+                    img['zoom'] = 13
                     img['description'] = ""
+                else:
+                    if 'description' not in img or img['description'] in ["RICOH IMAGING", "DCIM@DRIFT"]:
+                        img['description'] = ""
 
             with open(os.path.join(g, 'index.html'), 'w') as out:
                 out.write(gallery_template.render(site=site, gallery=gallery))
