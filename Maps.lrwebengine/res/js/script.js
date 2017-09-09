@@ -315,6 +315,8 @@ window.onload = function() {
                 });
                 if (flyTo)
                     map.flyTo([link.attr("data-lat"), link.attr("data-lng")], link.attr("data-zoom"));
+                else
+                    map.flyToBounds($("#map").data("bounds"), {paddingTopLeft: [0, 0], paddingBottomRight: [0, $("#thumbs").height()]});
             }
 
             if ($("#map").data("currentMarker") != undefined)
