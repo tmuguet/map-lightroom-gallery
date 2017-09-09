@@ -302,6 +302,8 @@ window.onload = function() {
                         map.invalidateSize(false);
                         if (flyTo)
                             map.flyTo([link.attr("data-lat"), link.attr("data-lng")], link.attr("data-zoom"));
+                        else
+                            map.flyToBounds($("#map").data("bounds"), {paddingTopLeft: [0, 0], paddingBottomRight: [0, $("#thumbs").height()]});
                     },
                 });
                 $("#btnDownloadImage").animate({opacity: 1});

@@ -9,6 +9,7 @@ import xml.etree.ElementTree as ET
 parser = argparse.ArgumentParser(description='Merges two galleries together')
 parser.add_argument('source', metavar='source', help='source gallery; will be removed')
 parser.add_argument('destination', metavar='destination', help='destination gallery; will contain the source gallery')
+parser.add_argument('--prepend', '-p', action='store_true', help='prepend source gallery to destination gallery')
 
 args = parser.parse_args()
 
@@ -32,8 +33,12 @@ with open(os.path.join(args.destination, 'info.json'), 'r') as destination_data:
     with open(os.path.join(args.source, 'info.json'), 'r') as source_data:
         source = json.load(source_data)
 
-        source['list'].pop(0)
-        destination['list'] = destination['list'] + source['list']
+        if args.prepend:
+            destination['list'].pop(0)
+            destination['list'] = source['list'] + destination['list']
+        else:
+            source['list'].pop(0)
+            destination['list'] = destination['list'] + source['list']
 
 with open(os.path.join(args.destination, 'info.json'), 'w') as destination_data:
     destination_data.write(json.dumps(destination, sort_keys=True, indent=4, separators=(',', ': ')))
