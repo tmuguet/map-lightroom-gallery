@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import argparse
 import HTMLParser
 import json
 import os
@@ -21,6 +22,16 @@ def strip_tags(html):
     s.feed(html)
     return s.get_data()
 
+
+parser = argparse.ArgumentParser(description='Re-generates galleries')
+parser.add_argument('source', metavar='source', help='folder of galleries to re-generate')
+
+args = parser.parse_args()
+
+if not os.path.isdir(args.source):
+    print "Error: can't find source '%s'" % (args.source)
+    exit(1)
+
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 gallery_template = Template(filename=os.path.join(dir_path, "gallery.mako"), input_encoding='utf-8', output_encoding='utf-8')
@@ -29,7 +40,7 @@ homepage_template = Template(filename=os.path.join(dir_path, "homepage.mako"), i
 with open(os.path.join(dir_path, 'params.json'), 'r') as site_data:
     site = json.load(site_data)
 
-    dirs = [f for f in os.listdir('.') if os.path.isdir(os.path.join('.', f)) and os.path.isfile(os.path.join('.', f, 'info.json'))]
+    dirs = [f for f in os.listdir(args.source) if os.path.isdir(os.path.join(args.source, f)) and os.path.isfile(os.path.join(args.source, f, 'info.json'))]
     dirs.sort(reverse=True)
 
     galleries = []
@@ -37,17 +48,17 @@ with open(os.path.join(dir_path, 'params.json'), 'r') as site_data:
     for g in dirs:
         print "Generating %s..." % g
 
-        with open(os.path.join(g, 'info.json'), 'r') as gallery_data:
+        with open(os.path.join(args.source, g, 'info.json'), 'r') as gallery_data:
             gallery = json.load(gallery_data)
 
             gallery['path'] = g
             gallery['canonicalUrlBase'] = site['host'] + site['root'] + '/' + g
 
-            if not os.path.isfile(os.path.join('.', g, 'track.gpx')):
+            if not os.path.isfile(os.path.join(args.source, g, 'track.gpx')):
                 print "[%s] Warning: could not find track.gpx" % (g)
-            elif os.stat(os.path.join('.', g, 'track.gpx')).st_size == 0:
+            elif os.stat(os.path.join(args.source, g, 'track.gpx')).st_size == 0:
                 print "[%s] Warning: track.gpx is empty" % (g)
-                os.remove(os.path.join('.', g, 'track.gpx'))
+                os.remove(os.path.join(args.source, g, 'track.gpx'))
             else:
                 gallery['track'] = g + '/track.gpx'
 
@@ -78,17 +89,17 @@ with open(os.path.join(dir_path, 'params.json'), 'r') as site_data:
                     if 'description' not in img or img['description'] in ["RICOH IMAGING", "DCIM@DRIFT"]:
                         img['description'] = ""
 
-            with open(os.path.join(g, 'index.html'), 'w') as out:
+            with open(os.path.join(args.source, g, 'index.html'), 'w') as out:
                 out.write(gallery_template.render(site=site, gallery=gallery))
 
-            shutil.rmtree(os.path.join(g, 'res'))
-            shutil.copytree(os.path.join(dir_path, 'res'), os.path.join(g, 'res'))
+            if os.path.isdir(os.path.join(args.source, g, 'res')):
+                shutil.rmtree(os.path.join(args.source, g, 'res'))
 
             galleries.append(gallery)
 
     print "Generating homepage..."
-    with open('index.html', 'w') as out:
+    with open(os.path.join(args.source, 'index.html'), 'w') as out:
         out.write(homepage_template.render(site=site, galleries=galleries))
 
-    shutil.rmtree('res')
-    shutil.copytree(os.path.join(dir_path, 'res'), 'res')
+    shutil.rmtree(os.path.join(args.source, 'res'))
+    shutil.copytree(os.path.join(dir_path, 'res'), os.path.join(args.source, 'res'))
