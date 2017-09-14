@@ -50,9 +50,38 @@ window.onload = function() {
         });
     }
 
+    var timeout = undefined;
     var bounds = undefined;
     var promises = [];
     var tracksLoaded = {};
+
+    function onTrackMouseover(item) {
+        $("li[data-track]").not(item).each(function() {
+            $(this).data("trackData").setStyle({opacity: 0.3, color: '#38AADD'});
+        });
+
+        var track = item.data("trackData");
+        var flyTo;
+        if (track === undefined) {
+            flyTo = item.data("bounds");
+        } else {
+            track.setStyle({color: '#81197f', opacity: 1});
+            flyTo = track.getBounds();
+        }
+
+        if (timeout)
+            clearTimeout(timeout);
+        timeout = setTimeout(function() {map.flyToBounds(flyTo, fitOpts);}, 500);
+    }
+    function onTrackMouseout(item) {
+        $("li[data-track]").each(function() {
+            $(this).data("trackData").setStyle({opacity: 0.75, color: '#38AADD'});
+        });
+        if (timeout)
+            clearTimeout(timeout);
+        map.flyToBounds(bounds, fitOpts);
+    }
+
     $("li[data-track]").each(function() {
         var self = $(this);
         var trackName = self.attr('data-track');
@@ -95,46 +124,20 @@ window.onload = function() {
         })
     );
 
-    var timeout = undefined;
-
     $.when.apply($, promises).done(function() {
         if (bounds != undefined) {
             map.fitBounds(bounds, fitOpts);
 
             $("li[data-track]").hover(function() {
-                $("li[data-track]").each(function() {
-                    $(this).data("trackData").setStyle({opacity: 0.3});
-                });
-                var track = $(this).data("trackData");
-                track.setStyle({color: '#81197f', opacity: 1});
-                if (timeout)
-                    clearTimeout(timeout);
-                timeout = setTimeout(function() {map.flyToBounds(track.getBounds(), fitOpts);}, 500);
+                onTrackMouseover($(this));
             }, function() {
-                $("li[data-track]").each(function() {
-                    $(this).data("trackData").setStyle({opacity: 0.75});
-                });
-                $(this).data("trackData").setStyle({color: '#38AADD'});
-                if (timeout)
-                    clearTimeout(timeout);
-                map.flyToBounds(bounds, fitOpts);
+                onTrackMouseout($(this));
             });
 
             $("li[data-bounds-min-lat]").hover(function() {
-                $("li[data-track]").each(function() {
-                    $(this).data("trackData").setStyle({opacity: 0.3});
-                });
-                var b = $(this).data("bounds");
-                if (timeout)
-                    clearTimeout(timeout);
-                timeout = setTimeout(function() {map.flyToBounds(b, fitOpts);}, 500);
+                onTrackMouseover($(this));
             }, function() {
-                $("li[data-track]").each(function() {
-                    $(this).data("trackData").setStyle({opacity: 0.75});
-                });
-                if (timeout)
-                    clearTimeout(timeout);
-                map.flyToBounds(bounds, fitOpts);
+                onTrackMouseout($(this));
             });
         }
     });
