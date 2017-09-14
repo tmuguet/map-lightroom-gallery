@@ -33,7 +33,7 @@ window.onload = function() {
 
 
 
-    function loadTrack(track) {
+    function loadTrack(track, style) {
         return $.Deferred(function() {
             var self = this;
 
@@ -43,7 +43,7 @@ window.onload = function() {
             });
             line.on('loaded', function(e) {
                 track = e.target;
-                track.setStyle({weight: 5, color: '#38AADD', opacity: 0.75});
+                track.setStyle(style);
                 track.addTo(map);
                 self.resolveWith(e.target);
             });
@@ -56,7 +56,7 @@ window.onload = function() {
     var tracksLoaded = {};
 
     function onTrackMouseover(item) {
-        $("li[data-track]").not(item).each(function() {
+        $("li[data-track], li[data-track-additional]").not(item).each(function() {
             $(this).data("trackData").setStyle({opacity: 0.3, color: '#38AADD'});
         });
 
@@ -77,6 +77,9 @@ window.onload = function() {
         $("li[data-track]").each(function() {
             $(this).data("trackData").setStyle({opacity: 0.75, color: '#38AADD'});
         });
+        $("li[data-track-additional]").each(function() {
+            $(this).data("trackData").setStyle({opacity: 0.5, color: '#38AADD'});
+        });
         if (timeout)
             clearTimeout(timeout);
         map.flyToBounds(bounds, fitOpts);
@@ -90,8 +93,9 @@ window.onload = function() {
             $.Deferred(function() {
                 var d = this;
 
-                loadTrack(trackName).done(function() {
+                loadTrack(trackName, {weight: 5, color: '#38AADD', opacity: 0.75}).done(function() {
                     self.data("trackData", this);
+
                     if (bounds == undefined)
                         bounds = this.getBounds();
                     else
@@ -100,6 +104,30 @@ window.onload = function() {
                     d.resolve();
                 }).fail(function() {
                     self.removeAttr("data-track");
+                    d.resolve();
+                });
+            })
+        );
+    });
+    $("li[data-track-additional]").each(function() {
+        var self = $(this);
+        var trackName = $(this).attr('data-track-additional');
+
+        promises.push(
+            $.Deferred(function() {
+                var d = this;
+
+                loadTrack(trackName, {weight: 3, color: '#38AADD', opacity: 0.5}).done(function() {
+                    self.data("trackData", this);
+
+                    if (bounds == undefined)
+                        bounds = this.getBounds();
+                    else
+                        bounds.extend(this.getBounds());
+
+                    d.resolve();
+                }).fail(function() {
+                    self.removeAttr("data-track-additional");
                     d.resolve();
                 });
             })

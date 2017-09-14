@@ -96,6 +96,12 @@ data-bounds-min-lat="${gallery['bounds'][0][0]}" data-bounds-min-lng="${gallery[
 style="background-image: url('${gallery['path']}/im/lg/${gallery['featured']}')"><a href="${gallery['path']}/"><span>${gallery['title']}</span></a></li>
 %endfor
                     </ul>
+                    <h2 style="display: none">Randonnées sans photos</h2>
+                    <ul style="display: none">
+%for track in site['additional-tracks']:
+                        <li data-track-additional="${track}"></li>
+%endfor
+                    </ul>
                 </div>
             </div>
 		</div>

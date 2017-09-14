@@ -135,6 +135,11 @@ with open(os.path.join(dir_path, 'params.json'), 'r') as site_data:
     if homepage_bounds is not None:
         site['bounds'] = homepage_bounds
 
+    if os.path.isdir(os.path.join(args.source, 'additional-tracks')):
+        site['additional-tracks'] = ['additional-tracks/' + f for f in os.listdir(os.path.join(args.source, 'additional-tracks')) if os.path.isfile(os.path.join(args.source, 'additional-tracks', f)) and f.endswith('gpx')]
+    else:
+        site['additional-tracks'] = []
+
     with open(os.path.join(args.source, 'index.html'), 'w') as out:
         out.write(homepage_template.render(site=site, galleries=galleries))
 
