@@ -266,11 +266,10 @@ window.onload = function() {
 
     function galleryShow(img) {
         var index = $("#thumbs li").index(img);
-        $.history.load(index);
-
         var selectedIndex = $("#thumbs li").index($("#thumbs li.selected"));
 
         if (index == 0) {
+            // Go back to cover
             $("#cover-container").fadeIn(400);
             $("#map").animate({width: '100%'}, {
                 duration: 400,
@@ -288,10 +287,12 @@ window.onload = function() {
 
             $("#btnDownloadImage").animate({opacity: 0.3});
         } else {
+            // Go to an image
             var link = img.find("a.thumb");
             var flyTo = link.attr("data-lat") && link.attr("data-lng") && link.attr("data-zoom");
 
-            if (selectedIndex < 1) {    // 0 or none selected
+            if (selectedIndex < 1) {
+                // Coming from cover
                 $("#cover-container").fadeOut(400, function() {$("#image-container").fadeIn(400);});
                 $("#map").animate({width: '30%'}, {
                     duration: 1000,
@@ -308,6 +309,7 @@ window.onload = function() {
                 });
                 $("#btnDownloadImage").animate({opacity: 1});
             } else {
+                // Coming from another image
                 var clone = $("#container").clone();
                 clone.insertAfter($("#container"));
                 clone.fadeOut(400, function() {
@@ -370,7 +372,8 @@ window.onload = function() {
         var current = $("#thumbs li.selected");
         var next = current.next();
         if (next.length > 0) {
-            galleryShow(next);
+            var index = $("#thumbs li").index(next);
+            $.history.load(index);  // Will trigger galleryGotoIndex and handle transition
             if (isSlideshowRunning)
                 gallerySetTimeout();
         }
@@ -379,7 +382,8 @@ window.onload = function() {
         var current = $("#thumbs li.selected");
         var prev = current.prev();
         if (prev.length > 0) {
-            galleryShow(prev);
+            var index = $("#thumbs li").index(prev);
+            $.history.load(index);  // Will trigger galleryGotoIndex and handle transition
         }
     }
     function galleryGotoIndex(index) {
@@ -535,7 +539,6 @@ window.onload = function() {
     /**** Functions to support integration of galleriffic with the jquery.history plugin ****/
     // This function is called after calling ???.init(), after calling ???.load(), and/or after pushing "Go Back" button of a browser
     function pageload(hash) {
-        // alert("pageload: " + hash);
         // hash doesn't contain the first # character.
         if(hash) {
             galleryGotoIndex(hash);
@@ -550,6 +553,8 @@ window.onload = function() {
     // set onlick event for buttons using the jQuery on method
     $("a[rel='history']").on('click', function(e) {
         if (e.button != 0) return true;
+
+        e.stopPropagation();
 
         var hash = this.href;
         hash = hash.replace(/^.*#/, '');

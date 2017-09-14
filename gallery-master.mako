@@ -194,7 +194,7 @@ ${items['endif']}
                 </div>
                 <div id="thumbs">
                     <ul>
-                        <li></li>
+                        <li class="selected"></li>
 %if output == 'mako':
 <%text>%for img in gallery['list']:
 <%
@@ -206,7 +206,7 @@ ${items['endif']}
 <% imgFn = image.exportFilename .. ".jpg" %></%text>
 %endif
                         <li>
-                            <a class="thumb" href="#${echo(items['loopIndex'])}" data-img-lg="im/lg/${echo(items['loopImage'])}" data-img-fl="im/fl/${echo(items['loopImage'])}" style="background-image: url('im/th/${echo(items['loopImage'])}');" ${items['loopData']}></a>
+                            <a class="thumb" href="#${echo(items['loopIndex'])}" rel="history" data-img-lg="im/lg/${echo(items['loopImage'])}" data-img-fl="im/fl/${echo(items['loopImage'])}" style="background-image: url('im/th/${echo(items['loopImage'])}');" ${items['loopData']}></a>
                             <div class="caption">
                                 <div class="image-title">${echo(items['loopTitle'])}</div>
                                 <div class="image-desc">${echo(items['loopDescription'])}</div>

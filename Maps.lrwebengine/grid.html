@@ -165,11 +165,11 @@ end
                 </div>
                 <div id="thumbs">
                     <ul>
-                        <li></li>
+                        <li class="selected"></li>
 <lr:ThumbnailGrid><lr:GridPhotoCell>
 <% imgFn = image.exportFilename .. ".jpg" %>
                         <li>
-                            <a class="thumb" href="#<%= cellIndex %>" data-img-lg="im/lg/<%= imgFn %>" data-img-fl="im/fl/<%= imgFn %>" style="background-image: url('im/th/<%= imgFn %>');" <%= getMapData(image, idToPhoto[image.imageID]) %>></a>
+                            <a class="thumb" href="#<%= cellIndex %>" rel="history" data-img-lg="im/lg/<%= imgFn %>" data-img-fl="im/fl/<%= imgFn %>" style="background-image: url('im/th/<%= imgFn %>');" <%= getMapData(image, idToPhoto[image.imageID]) %>></a>
                             <div class="caption">
                                 <div class="image-title"><%= image.metadata.title %></div>
                                 <div class="image-desc"><%= image.metadata.description %></div>

@@ -103,14 +103,14 @@ def strip_tags(html):
                 </div>
                 <div id="thumbs">
                     <ul>
-                        <li></li>
+                        <li class="selected"></li>
 %for img in gallery['list']:
 <%
     if loop.first:
         continue
 %>
                         <li>
-                            <a class="thumb" href="#${loop.index}" data-img-lg="im/lg/${img['image']}" data-img-fl="im/fl/${img['image']}" style="background-image: url('im/th/${img['image']}');" ${'data-lat="' + str(img['lat']) + '"' if 'lat' in img else ''} ${'data-lng="' + str(img['lng']) + '"' if 'lng' in img else ''} data-zoom="${img['zoom']}"></a>
+                            <a class="thumb" href="#${loop.index}" rel="history" data-img-lg="im/lg/${img['image']}" data-img-fl="im/fl/${img['image']}" style="background-image: url('im/th/${img['image']}');" ${'data-lat="' + str(img['lat']) + '"' if 'lat' in img else ''} ${'data-lng="' + str(img['lng']) + '"' if 'lng' in img else ''} data-zoom="${img['zoom']}"></a>
                             <div class="caption">
                                 <div class="image-title">${img['title']}</div>
                                 <div class="image-desc">${img['description']}</div>
