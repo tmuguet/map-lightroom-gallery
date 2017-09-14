@@ -79,7 +79,11 @@ def strip_tags(html):
 
 		<div id="cover-container">
     		<div>
-                <div id="cover">
+                <div id="cover"
+%if 'bounds' in site:
+data-bounds-min-lat="${site['bounds'][0][0]}" data-bounds-min-lng="${site['bounds'][0][1]}" data-bounds-max-lat="${site['bounds'][1][0]}" data-bounds-max-lng="${site['bounds'][1][1]}"
+%endif
+>
                     <h2>Randonnées</h2>
                     <ul>
 %for gallery in galleries:

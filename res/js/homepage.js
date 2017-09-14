@@ -1,5 +1,23 @@
 window.onload = function() {
-	var map = L.map('map', {zoomControl: false, boxZoom: false, doubleClickZoom: false, dragging: false, keyboard: false, scrollWheelZoom: false, tap: false}).setView([44.92710337178908, 6.291518211364747], 15);
+    var fitOpts = {paddingTopLeft: [0, $("#header").height()], paddingBottomRight: [0, $("#cover").height()]};
+	var map = L.map('map', {zoomControl: false, boxZoom: false, doubleClickZoom: false, dragging: false, keyboard: false, scrollWheelZoom: false, tap: false});
+
+
+    var cover = $("#cover");
+    var b;
+    if (cover[0].hasAttribute("data-bounds-min-lat")) {
+        b = L.latLngBounds(
+            L.latLng(cover.attr("data-bounds-min-lat"), cover.attr("data-bounds-min-lng")),
+            L.latLng(cover.attr("data-bounds-max-lat"), cover.attr("data-bounds-max-lng"))
+        );
+    } else {
+        b = L.latLngBounds(
+            L.latLng(45.495019, 6.647571),   // Magic numbers; bounds around Grenoble
+            L.latLng(44.69632, 5.3951)       // so map loads faster
+        );
+    }
+
+	map.fitBounds(b, fitOpts);
 
     var lyr = L.geoportalLayer.WMTS({
         layer  : "ORTHOIMAGERY.ORTHOPHOTOS",
@@ -78,7 +96,7 @@ window.onload = function() {
     );
 
     var timeout = undefined;
-    var fitOpts = {paddingTopLeft: [0, 0], paddingBottomRight: [0, $("#cover").height()]};
+
     $.when.apply($, promises).done(function() {
         if (bounds != undefined) {
             map.fitBounds(bounds, fitOpts);

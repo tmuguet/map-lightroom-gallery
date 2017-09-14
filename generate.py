@@ -5,6 +5,7 @@ import HTMLParser
 import json
 import os
 import shutil
+import xml.etree.ElementTree as ET
 
 from mako.template import Template
 
@@ -22,6 +23,30 @@ def strip_tags(html):
     s.feed(html)
     return s.get_data()
 
+def mergeBounds(bounds1, bounds2):
+    if bounds1 is None:
+        bounds = bounds2
+    elif bounds2 is None:
+        bounds = bounds1
+    else:
+        bounds = [
+            [min(bounds1[0][0], bounds2[0][0]), min(bounds1[0][1], bounds2[0][1])],
+            [max(bounds1[1][0], bounds2[1][0]), max(bounds1[1][1], bounds2[1][1])],
+        ]
+    return bounds
+
+def extendBounds(bounds1, latLng):
+    if latLng is None:
+        bounds = bounds1
+    elif bounds1 is None:
+        bounds = [[latLng['lat'], latLng['lng']], [latLng['lat'], latLng['lng']]]
+    else:
+        bounds = [
+            [min(bounds1[0][0], latLng['lat']), min(bounds1[0][1], latLng['lng'])],
+            [max(bounds1[1][0], latLng['lat']), max(bounds1[1][1], latLng['lng'])],
+        ]
+    return bounds
+
 
 parser = argparse.ArgumentParser(description='Re-generates galleries')
 parser.add_argument('source', metavar='source', help='folder of galleries to re-generate')
@@ -36,6 +61,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 gallery_template = Template(filename=os.path.join(dir_path, "gallery.mako"), input_encoding='utf-8', output_encoding='utf-8')
 homepage_template = Template(filename=os.path.join(dir_path, "homepage.mako"), input_encoding='utf-8', output_encoding='utf-8')
+ET.register_namespace('', 'http://www.topografix.com/GPX/1/1')
 
 with open(os.path.join(dir_path, 'params.json'), 'r') as site_data:
     site = json.load(site_data)
@@ -51,6 +77,7 @@ with open(os.path.join(dir_path, 'params.json'), 'r') as site_data:
     dirs.sort(reverse=True)
 
     galleries = []
+    homepage_bounds = None
 
     for g in dirs:
         print "Generating %s..." % g
@@ -67,26 +94,25 @@ with open(os.path.join(dir_path, 'params.json'), 'r') as site_data:
                 print "[%s] Warning: track.gpx is empty" % (g)
                 os.remove(os.path.join(args.source, g, 'track.gpx'))
             else:
-                gallery['track'] = g + '/track.gpx'
+                gallery['track'] = g + '/track.gpx' # Not using os.path.join because we want a URI
+
 
             if 'track' not in gallery:
                 # Fallback to compute bounds
                 bounds = None
                 for img in gallery['list']:
                     if 'lat' in img and 'lng' in img:
-                        if bounds is None:
-                            bounds = [[img['lat'], img['lng']], [img['lat'], img['lng']]]
-                        else:
-                            bounds[0][0] = min(bounds[0][0], img['lat'])
-                            bounds[0][1] = min(bounds[0][1], img['lng'])
-                            bounds[1][0] = max(bounds[1][0], img['lat'])
-                            bounds[1][1] = max(bounds[1][1], img['lng'])
+                        bounds = extendBounds(bounds, img)
 
                 if bounds is not None:
                     gallery['bounds'] = bounds
+                    homepage_bounds = mergeBounds(homepage_bounds, bounds)
                 else:
                     print "[%s] Warning: no photo has location data" % (g)
-
+            else:
+                source_root = ET.parse(os.path.join(args.source, g, 'track.gpx')).getroot()
+                for child in source_root.findall('.//{http://www.topografix.com/GPX/1/1}trkpt'):
+                    homepage_bounds = extendBounds(homepage_bounds, {'lat': child.get('lat'), 'lng': child.get('lon')})
 
             for img in gallery['list']:
                 if 'type' in gallery and gallery['type'] == 'collection':
@@ -105,6 +131,10 @@ with open(os.path.join(dir_path, 'params.json'), 'r') as site_data:
             galleries.append(gallery)
 
     print "Generating homepage..."
+
+    if homepage_bounds is not None:
+        site['bounds'] = homepage_bounds
+
     with open(os.path.join(args.source, 'index.html'), 'w') as out:
         out.write(homepage_template.render(site=site, galleries=galleries))
 
