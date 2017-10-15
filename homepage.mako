@@ -93,7 +93,7 @@ data-track="${gallery['track']}"
 %elif 'bounds' in gallery:
 data-bounds-min-lat="${gallery['bounds'][0][0]}" data-bounds-min-lng="${gallery['bounds'][0][1]}" data-bounds-max-lat="${gallery['bounds'][1][0]}" data-bounds-max-lng="${gallery['bounds'][1][1]}"
 %endif
-style="background-image: url('${gallery['path']}/im/lg/${gallery['featured']}')"><a href="${gallery['path']}/"><span>${gallery['title']}</span></a></li>
+style="background-image: url('${gallery['path']}/im/th/${gallery['featured']}')"><a href="${gallery['path']}/"><span>${gallery['title']}</span></a></li>
 %endfor
                     </ul>
                     <h2 style="display: none">Randonnées sans photos</h2>
