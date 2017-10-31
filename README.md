@@ -71,7 +71,7 @@ The script relies on some parameters within the _params.json_ file:
 * `title`: name of your website (as entered in Lightroom in _Site Title_)
 * `ign-key`: IGN API key (as entered in Lightroom as _IGN API key_)
 * `host`: Complete address of the host of your website (e.g. "http://v9.thomasmuguet.info", without any subfolder) - no trailing slash
-* `root`: root of your website (e.g. "/my-subdirectory") - no trailing slash
+* `root`: root of your website (e.g. "/my-subdirectory", or empty if your website is at the root of your domain) - no trailing slash
 * `links`: optionally, you can define 2 lists of links to be displayed in top-right corner of the homepage
 
 Here, the samples parameters are for a homepage hosted at _http://v9.thomasmuguet.info/my-subdirectory_.
@@ -93,6 +93,8 @@ Use `python generate.py -h` to obtain help.
 Other scripts are provided to:
 * merge two galleries together: _merge.py_
 * reverse the list of images in a gallery: _reverse.py_
+
+Use `-h` to obtain help on these scripts.
 
 In both cases, you will have to re-generate the galleries using _generate.py_.
 
