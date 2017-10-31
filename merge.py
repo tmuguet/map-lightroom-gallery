@@ -63,7 +63,7 @@ if os.path.isfile(os.path.join(args.destination, 'track.gpx')) and os.stat(os.pa
 else:
     if os.path.isfile(os.path.join(args.source, 'track.gpx')) and os.stat(os.path.join(args.source, 'track.gpx')).st_size > 0:
         print "Using only track from source '%s'..." % (args.source)
-        os.replace(os.path.join(args.source, 'track.gpx'), os.path.join(args.destination, 'track.gpx'))
+        os.rename(os.path.join(args.source, 'track.gpx'), os.path.join(args.destination, 'track.gpx'))
 
     else:
         print "No tracks in source '%s' or destination '%s'" % (args.source, args.destination)
