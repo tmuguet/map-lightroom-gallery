@@ -34,6 +34,7 @@ def strip_tags(html):
 		<meta property="og:image" content="${site['host']}${site['root']}/${galleries[0]['path']}/im/lg/${galleries[0]['featured']}" />
 		<meta property="og:url" content="${site['host']}${site['root']}/index.html" />
 		<link rel="canonical" href="${site['host']}${site['root']}/index.html" />
+		<link rel="alternate" type="application/atom+xml" title="${site['title']|strip_tags}" href="${site['host']}${site['root']}/atom.xml" />
 
         <link href="${site['root']}/res/css/homepage.css" rel="stylesheet">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">

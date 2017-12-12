@@ -1,10 +1,12 @@
 #!/usr/bin/python
 
 import argparse
+import hashlib
 import HTMLParser
 import json
 import os
 import shutil
+import time
 import xml.etree.ElementTree as ET
 
 from mako.template import Template
@@ -61,6 +63,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 gallery_template = Template(filename=os.path.join(dir_path, "gallery.mako"), input_encoding='utf-8', output_encoding='utf-8')
 homepage_template = Template(filename=os.path.join(dir_path, "homepage.mako"), input_encoding='utf-8', output_encoding='utf-8')
+atom_template = Template(filename=os.path.join(dir_path, "atom.mako"), input_encoding='utf-8', output_encoding='utf-8')
 ET.register_namespace('', 'http://www.topografix.com/GPX/1/1')
 
 with open(os.path.join(dir_path, 'params.json'), 'r') as site_data:
@@ -122,6 +125,9 @@ with open(os.path.join(dir_path, 'params.json'), 'r') as site_data:
                     if 'description' not in img or img['description'] in ["RICOH IMAGING", "DCIM@DRIFT"]:
                         img['description'] = ""
 
+            gallery['md5'] = hashlib.md5(gallery['title'].encode('utf-8')).hexdigest()
+            gallery['date'] = os.path.getctime(os.path.join(args.source, g, 'info.json'))
+
             with open(os.path.join(args.source, g, 'index.html'), 'w') as out:
                 out.write(gallery_template.render(site=site, gallery=gallery))
 
@@ -135,6 +141,8 @@ with open(os.path.join(dir_path, 'params.json'), 'r') as site_data:
     if homepage_bounds is not None:
         site['bounds'] = homepage_bounds
 
+    site['md5'] = hashlib.md5(site['title'].encode('utf-8')).hexdigest()
+
     if os.path.isdir(os.path.join(args.source, 'additional-tracks')):
         site['additional-tracks'] = ['additional-tracks/' + f for f in os.listdir(os.path.join(args.source, 'additional-tracks')) if os.path.isfile(os.path.join(args.source, 'additional-tracks', f)) and f.endswith('gpx')]
     else:
@@ -142,6 +150,9 @@ with open(os.path.join(dir_path, 'params.json'), 'r') as site_data:
 
     with open(os.path.join(args.source, 'index.html'), 'w') as out:
         out.write(homepage_template.render(site=site, galleries=galleries))
+
+    with open(os.path.join(args.source, 'atom.xml'), 'w') as out:
+        out.write(atom_template.render(site=site, galleries=galleries))
 
     shutil.rmtree(os.path.join(args.source, 'res'))
     shutil.copytree(os.path.join(dir_path, 'res'), os.path.join(args.source, 'res'))
