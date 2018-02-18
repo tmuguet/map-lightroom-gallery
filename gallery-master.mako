@@ -135,7 +135,7 @@ ${items['endif']}
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
         <link href="${resFolder}/css/jquery-ui.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
-        <link rel="stylesheet" href="${resFolder}/leaflet/GpPluginLeaflet.css" />
+        <link rel="stylesheet" href="https://unpkg.com/geoportal-extensions-leaflet@1.0.0/dist/GpPluginLeaflet.css" />
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="${resFolder}/js/jquery.plugins.js"></script>
@@ -143,7 +143,7 @@ ${items['endif']}
 
         <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
 
-        <script src="${resFolder}/leaflet/GpPluginLeaflet.js"></script>
+        <script data-key="${echo(items['ignKey'])}" src="https://unpkg.com/geoportal-extensions-leaflet@1.0.0/dist/GpPluginLeaflet.js"></script>
         <script>
             var keyIgn = '${echo(items['ignKey'])}';
         </script>
