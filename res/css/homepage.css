@@ -51,7 +51,7 @@ a.thumb {display: inline-block; width: 75px; height: 75px; background-position: 
 #legend {position: absolute; bottom: 0px; left: 0px; right: 0px; background-color: rgba(0, 0, 0, 0.5); padding: 1em;}
 
 #cover ul { display: inline-block; line-height: 0px; margin: 0px; padding: 0px;}
-#cover li {display: inline-block; margin: 10px; padding: 0px; width: 75px; height: 75px; overflow: hidden; border: 1px solid #333333; background-position: center center; background-repeat: no-repeat; background-size: cover; opacity: 0.8}
+#cover li {display: inline-block; padding: 0px; width: 75px; height: 75px; overflow: hidden; border: 1px solid #333333; background-position: center center; background-repeat: no-repeat; background-size: cover; opacity: 0.8}
 #cover li:hover {opacity: 1; transition: opacity 0.5s ease-in-out;}
 #cover li a {display: block; padding: 0px; margin: 0px; height: 100%; width: 100%; }
 #cover li a span {display: block; line-height: 1em; padding: 2px 5px; margin: 0px; background-color: rgba(0, 0, 0, 0.5); width: 100%; }
