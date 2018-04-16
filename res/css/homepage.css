@@ -35,7 +35,7 @@ a:hover, button:hover {
 #map {position: absolute; width: 100%; top: 0px; bottom: 0px; right: 0px;}
 
 #cover-container {position: absolute; left: 0px; top: 0px; bottom: 0px; right: 0px;  overflow: hidden; z-index: 1000}
-#cover-container > div {position: absolute; left: 0px; bottom: 0px; right: 0px;}
+#cover-container > div {position: absolute; left: 0px; bottom: 0px; right: 0px; max-height: 50%; overflow: auto; }
 #cover {margin-bottom: 0px; background-color: rgba(0, 0, 0, 0.5); }
 #cover > div {display: block; height: 200px; margin-top: 50px;}
 
