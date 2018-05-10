@@ -35,7 +35,7 @@ a:hover, button:hover {
 #map {position: absolute; width: 100%; top: 0px; bottom: 0px; right: 0px;}
 
 #cover-container {position: absolute; left: 0px; top: 0px; bottom: 0px; right: 0px;  overflow: hidden; z-index: 1000}
-#cover-container > div {position: absolute; left: 0px; bottom: 0px; right: 0px;}
+#cover-container > div {position: absolute; left: 0px; bottom: 0px; right: 0px; max-height: 50%; overflow: auto; }
 #cover {margin-bottom: 0px; background-color: rgba(0, 0, 0, 0.5); }
 #cover > div {display: block; height: 200px; margin-top: 50px;}
 
@@ -51,7 +51,7 @@ a.thumb {display: inline-block; width: 75px; height: 75px; background-position: 
 #legend {position: absolute; bottom: 0px; left: 0px; right: 0px; background-color: rgba(0, 0, 0, 0.5); padding: 1em;}
 
 #cover ul { display: inline-block; line-height: 0px; margin: 0px; padding: 0px;}
-#cover li {display: inline-block; margin: 10px; padding: 0px; width: 75px; height: 75px; overflow: hidden; border: 1px solid #333333; background-position: center center; background-repeat: no-repeat; background-size: cover; opacity: 0.8}
+#cover li {display: inline-block; padding: 0px; width: 75px; height: 75px; overflow: hidden; border: 1px solid #333333; background-position: center center; background-repeat: no-repeat; background-size: cover; opacity: 0.8}
 #cover li:hover {opacity: 1; transition: opacity 0.5s ease-in-out;}
 #cover li a {display: block; padding: 0px; margin: 0px; height: 100%; width: 100%; }
 #cover li a span {display: block; line-height: 1em; padding: 2px 5px; margin: 0px; background-color: rgba(0, 0, 0, 0.5); width: 100%; }

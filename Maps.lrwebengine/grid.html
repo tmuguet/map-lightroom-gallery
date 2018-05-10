@@ -84,18 +84,18 @@ end
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 		<meta name="viewport"  content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-		<meta name="generator" content="Map Lightroom Web Gallery plugin v0.3.1 for Adobe Photoshop Lightroom" />
+		<meta name="generator" content="Map Lightroom Web Gallery plugin v0.3.2 for Adobe Photoshop Lightroom" />
 		<meta name="Keywords" content="<%= model.metadata.keywords %>" />
 <% if model.nonCSS.noIndexing then %>
 		<meta name="robots" content="noindex,nofollow" />
 <% else %>
 		<meta name="robots" content="index,follow" />
 <% end %>
-        <link rel="shortcut icon" href="./res/ico/logo.ico">
-        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="./res/ico/logo-144.png">
-        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="./res/ico/logo-114.png">
-        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="./res/ico/logo-medium-72.png">
-        <link rel="apple-touch-icon-precomposed" href="./res/ico/logo-medium-57.png">
+		<link rel="icon" type="image/png" sizes="72x72" href="./res/ico/logo-medium-72.png">
+		<link rel="apple-touch-icon" sizes="57x57" href="./res/ico/logo-medium-57.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="./res/ico/logo-medium-72.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="./res/ico/logo-114.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="./res/ico/logo-144.png">
 
 		<title><%= stripTags(model.metadata.collectionTitle.value) %> - <%= stripTags(model.metadata.siteTitle.value) %></title>
 		<meta property="og:title" content="<%= stripTags(model.metadata.collectionTitle.value) %> - <%= stripTags(model.metadata.siteTitle.value) %>"/>

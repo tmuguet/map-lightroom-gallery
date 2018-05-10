@@ -82,7 +82,7 @@ window.onload = function() {
         });
         if (timeout)
             clearTimeout(timeout);
-        map.flyToBounds(bounds, fitOpts);
+        timeout = setTimeout(function() {map.flyToBounds(bounds, fitOpts);}, 1000);
     }
 
     $("li[data-track]").each(function() {

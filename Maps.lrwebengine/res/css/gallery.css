@@ -47,5 +47,6 @@ a.thumb {display: inline-block; width: 75px; height: 75px; background-position: 
 #container, #next {position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; background-position: center center; background-repeat: no-repeat; background-size: contain;}
 #next {display: none;}
 #legend {position: absolute; bottom: 0px; left: 0px; right: 0px; background-color: rgba(0, 0, 0, 0.5); padding: 1em;}
+#legend a {text-decoration: underline; color: #FFFFFF;}
 
 #container, #cover-container {cursor: pointer;}
