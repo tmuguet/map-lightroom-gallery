@@ -116,11 +116,11 @@ ${items['if']}${items['noIndexing']}${items['then']}
 ${items['else']}
 		<meta name="robots" content="index,follow" />
 ${items['endif']}
-        <link rel="shortcut icon" href="${resFolder}/ico/logo.ico">
-        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="${resFolder}/ico/logo-144.png">
-        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="${resFolder}/ico/logo-114.png">
-        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="${resFolder}/ico/logo-medium-72.png">
-        <link rel="apple-touch-icon-precomposed" href="${resFolder}/ico/logo-medium-57.png">
+		<link rel="icon" type="image/png" sizes="72x72" href="${resFolder}/ico/logo-medium-72.png">
+		<link rel="apple-touch-icon" sizes="57x57" href="${resFolder}/ico/logo-medium-57.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="${resFolder}/ico/logo-medium-72.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="${resFolder}/ico/logo-114.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="${resFolder}/ico/logo-144.png">
 
 		<title>${echo_strip(items['galleryTitle'])} - ${echo_strip(items['siteTitle'])}</title>
 		<meta property="og:title" content="${echo_strip(items['galleryTitle'])} - ${echo_strip(items['siteTitle'])}"/>
