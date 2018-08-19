@@ -71,7 +71,7 @@ window.onload = function() {
 
         if (timeout)
             clearTimeout(timeout);
-        timeout = setTimeout(function() {map.flyToBounds(flyTo, fitOpts);}, 500);
+        timeout = setTimeout(function() {map.flyToBounds(flyTo, fitOpts);}, 1000);
     }
     function onTrackMouseout(item) {
         $("li[data-track]").each(function() {
@@ -82,7 +82,7 @@ window.onload = function() {
         });
         if (timeout)
             clearTimeout(timeout);
-        timeout = setTimeout(function() {map.flyToBounds(bounds, fitOpts);}, 1000);
+        timeout = setTimeout(function() {map.flyToBounds(bounds, fitOpts);}, 2000);
     }
 
     $("li[data-track]").each(function() {
