@@ -58,6 +58,9 @@ def strip_tags(html):
 
         <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
 
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2.3.0/src/easy-button.css">
+        <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2.3.0/src/easy-button.js"></script>
+
         <script data-key="${site['ign-key']}" src="https://unpkg.com/geoportal-extensions-leaflet@1.0.0/dist/GpPluginLeaflet.js"></script>
         <script>
             var keyIgn = '${site['ign-key']}';

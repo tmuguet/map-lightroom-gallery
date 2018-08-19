@@ -57,6 +57,22 @@ window.onload = function() {
     });
     lyr2.addTo(map);
 
+    var map2gpxButton = L.easyButton({
+        id: 'btn-map2gpx',
+        states: [
+            {
+                stateName: 'loaded',
+                icon: 'fa-window-restore',
+                title: 'Ouvrir dans map2gpx',
+                onClick: function () {
+                    var center = map.getCenter();
+                    window.open('https://map2gpx.fr?lat=' + center.lat + '&lng=' + center.lng);
+                },
+            },
+        ],
+    });
+    L.easyBar([map2gpxButton], { id: 'btns-export', position: 'bottomleft' }).addTo(map);
+
     var plotMarker = null;
     var ctx = $("#chart");
     var chart = new Chart(ctx, {
