@@ -33,7 +33,7 @@ window.onload = function() {
 
 
 
-    function loadTrack(track, style) {
+    function loadTrack(track, style, item) {
         return $.Deferred(function() {
             var self = this;
 
@@ -42,23 +42,44 @@ window.onload = function() {
                 self.reject();
             });
             line.on('loaded', function(e) {
-                track = e.target;
+                var track = e.target;
                 track.setStyle(style);
                 track.addTo(map);
                 self.resolveWith(e.target);
+                if (item !== null) {
+                    track.on('mouseover', function (e) {
+                        onTrackMouseover(item, 1000);
+                    });
+                    track.on('mouseout', function (e) {
+                        if (timeout)
+                            clearTimeout(timeout);
+                    });
+                }
             });
         });
     }
 
     var timeout = undefined;
+    var popup = undefined;
     var bounds = undefined;
     var promises = [];
     var tracksLoaded = {};
 
-    function onTrackMouseover(item) {
+    map.on('popupclose', function (e) {
+        if (popup !== undefined) {
+            onTrackMouseout(null, 0);
+        }
+    });
+
+    function onTrackMouseover(item, delay) {
         $("li[data-track], li[data-track-additional]").not(item).each(function() {
             $(this).data("trackData").setStyle({opacity: 0.3, color: '#38AADD'});
         });
+
+        if (popup !== undefined) {
+            popup = undefined;
+            map.closePopup();
+        }
 
         var track = item.data("trackData");
         var flyTo;
@@ -71,18 +92,36 @@ window.onload = function() {
 
         if (timeout)
             clearTimeout(timeout);
-        timeout = setTimeout(function() {map.flyToBounds(flyTo, fitOpts);}, 500);
+        timeout = setTimeout(function() {
+            var img = item.css('background-image').replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+            var url = item.find('a').attr('href');
+            var title = item.text();
+            popup = L.popup({autoPan: false, closeButton: false})
+                .setLatLng(flyTo.getCenter())
+                .setContent('<p style="text-align: center"><a href="' + url + '" title="' + title + '"><strong>' + title + '</strong><br><img src="' + img + '"/></a></p>')
+                .openOn(map);
+
+            map.flyToBounds(flyTo, fitOpts);
+        }, delay);
     }
-    function onTrackMouseout(item) {
-        $("li[data-track]").each(function() {
-            $(this).data("trackData").setStyle({opacity: 0.75, color: '#38AADD'});
-        });
-        $("li[data-track-additional]").each(function() {
-            $(this).data("trackData").setStyle({opacity: 0.5, color: '#38AADD'});
-        });
+    function onTrackMouseout(item, delay) {
         if (timeout)
             clearTimeout(timeout);
-        timeout = setTimeout(function() {map.flyToBounds(bounds, fitOpts);}, 1000);
+        timeout = setTimeout(function() {
+            map.flyToBounds(bounds, fitOpts);
+
+            $("li[data-track]").each(function() {
+                $(this).data("trackData").setStyle({opacity: 0.75, color: '#38AADD'});
+            });
+            $("li[data-track-additional]").each(function() {
+                $(this).data("trackData").setStyle({opacity: 0.5, color: '#38AADD'});
+            });
+
+            if (popup !== undefined) {
+                popup = undefined;
+                map.closePopup();
+            }
+        }, delay);
     }
 
     $("li[data-track]").each(function() {
@@ -93,7 +132,7 @@ window.onload = function() {
             $.Deferred(function() {
                 var d = this;
 
-                loadTrack(trackName, {weight: 5, color: '#38AADD', opacity: 0.75}).done(function() {
+                loadTrack(trackName, {weight: 5, color: '#38AADD', opacity: 0.75}, self).done(function() {
                     self.data("trackData", this);
 
                     if (bounds == undefined)
@@ -117,7 +156,7 @@ window.onload = function() {
             $.Deferred(function() {
                 var d = this;
 
-                loadTrack(trackName, {weight: 3, color: '#38AADD', opacity: 0.5}).done(function() {
+                loadTrack(trackName, {weight: 3, color: '#38AADD', opacity: 0.5}, null).done(function() {
                     self.data("trackData", this);
 
                     if (bounds == undefined)
@@ -156,16 +195,10 @@ window.onload = function() {
         if (bounds != undefined) {
             map.fitBounds(bounds, fitOpts);
 
-            $("li[data-track]").hover(function() {
-                onTrackMouseover($(this));
+            $("li[data-track], li[data-bounds-min-lat]").hover(function() {
+                onTrackMouseover($(this), 1000);
             }, function() {
-                onTrackMouseout($(this));
-            });
-
-            $("li[data-bounds-min-lat]").hover(function() {
-                onTrackMouseover($(this));
-            }, function() {
-                onTrackMouseout($(this));
+                onTrackMouseout($(this), 2000);
             });
         }
     });

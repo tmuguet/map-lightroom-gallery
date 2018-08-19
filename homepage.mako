@@ -79,16 +79,15 @@ def strip_tags(html):
     	<div id="map"></div>
 
 		<div id="cover-container">
-    		<div>
-                <div id="cover"
+            <div id="cover"
 %if 'bounds' in site:
 data-bounds-min-lat="${site['bounds'][0][0]}" data-bounds-min-lng="${site['bounds'][0][1]}" data-bounds-max-lat="${site['bounds'][1][0]}" data-bounds-max-lng="${site['bounds'][1][1]}"
 %endif
 >
-                    <h2>Randonnées</h2>
-                    <ul>
+                <h2>Randonnées</h2>
+                <ul>
 %for gallery in galleries:
-                        <li
+                    <li
 %if 'track' in gallery:
 data-track="${gallery['track']}"
 %elif 'bounds' in gallery:
@@ -96,14 +95,13 @@ data-bounds-min-lat="${gallery['bounds'][0][0]}" data-bounds-min-lng="${gallery[
 %endif
 style="background-image: url('${gallery['path']}/im/th/${gallery['featured']}')"><a href="${gallery['path']}/"><span>${gallery['title']}</span></a></li>
 %endfor
-                    </ul>
-                    <h2 style="display: none">Randonnées sans photos</h2>
-                    <ul style="display: none">
+                </ul>
+                <h2 style="display: none">Randonnées sans photos</h2>
+                <ul style="display: none">
 %for track in site['additional-tracks']:
-                        <li data-track-additional="${track}"></li>
+                    <li data-track-additional="${track}"></li>
 %endfor
-                    </ul>
-                </div>
+                </ul>
             </div>
 		</div>
         <script src="${site['root']}/res/js/homepage.js"></script>
