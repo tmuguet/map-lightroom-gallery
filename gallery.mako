@@ -24,7 +24,7 @@ def strip_tags(html):
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 		<meta name="viewport"  content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-		<meta name="generator" content="Map Lightroom Web Gallery plugin v0.3.2 for Adobe Photoshop Lightroom" />
+		<meta name="generator" content="Map Lightroom Web Gallery plugin v0.3.3 for Adobe Photoshop Lightroom" />
 		<meta name="Keywords" content="${gallery['keywords']}" />
 %if gallery['noIndexing']:
 		<meta name="robots" content="noindex,nofollow" />

@@ -5,7 +5,7 @@ import shutil
 
 from mako.template import Template
 
-version = "0.3.2"
+version = "0.3.3"
 
 map_mako = {
     'if': '%if ',
