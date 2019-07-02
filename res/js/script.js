@@ -65,8 +65,8 @@ window.onload = function() {
                 icon: 'fa-window-restore',
                 title: 'Ouvrir dans map2gpx',
                 onClick: function () {
-                    var center = map.getCenter();
-                    window.open('https://map2gpx.fr?lat=' + center.lat + '&lng=' + center.lng);
+                    var folder = window.location.href.substring(0, window.location.href.lastIndexOf("/"));
+                    window.open('https://map2gpx.fr?url=' + encodeURI(folder + '/track.gpx'));
                 },
             },
         ],
