@@ -38,14 +38,14 @@ def strip_tags(html):
 
         <link href="${site['root']}/res/css/homepage.css" rel="stylesheet">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
-        <link rel="stylesheet" href="https://unpkg.com/geoportal-extensions-leaflet@1.0.0/dist/GpPluginLeaflet.css" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+        <link rel="stylesheet" href="https://unpkg.com/geoportal-extensions-leaflet@2.0.3/dist/GpPluginLeaflet.css" />
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
-        <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+        <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
 
-        <script data-key="${site['ign-key']}" src="https://unpkg.com/geoportal-extensions-leaflet@1.0.0/dist/GpPluginLeaflet.js"></script>
+        <script data-key="${site['ign-key']}" src="https://unpkg.com/geoportal-extensions-leaflet@2.0.3/dist/GpPluginLeaflet.js"></script>
         <script>
             var keyIgn = '${site['ign-key']}';
         </script>
