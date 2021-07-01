@@ -1,5 +1,7 @@
 # Map Lightroom Web Gallery
 
+**This project is unmaintained. I switched to simply exporting the pictures and building the website via [Hugo](http://gohugo.io/) and my theme [hugo-split-gallery](https://gitlab.com/tmuguet/hugo-split-gallery)**
+
 **Important note:** You will need an [API key from IGN](http://professionnels.ign.fr/ign/contrats) (free) to use the maps.
 
 It is missing a lot of configurations options (color themes, etc.), and rendering is not optimized for mobiles devices.
